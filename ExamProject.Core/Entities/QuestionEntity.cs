@@ -27,7 +27,7 @@ namespace ExamProject.Domain.Entities {
         public short Score { get; set; }
 
         [ForeignKey("Exam")]
-        public int ExamId { get; set; }
+        public int? ExamId { get; set; }
 
         public virtual ExamEntity Exam { get; set; }
     }

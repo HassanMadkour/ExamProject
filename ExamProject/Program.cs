@@ -10,7 +10,11 @@ namespace ExamProject {
         public static void Main(string[] args) {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>()
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(
+Options => {
+    Options.Password.RequireNonAlphanumeric = false;
+}
+                )
                 .AddEntityFrameworkStores<ExamDbContext>().AddDefaultTokenProviders();
             builder.Services.AddDbContext<ExamDbContext>(
                 Options => Options.UseSqlServer(builder.Configuration.GetConnectionString("ExamDbConnection"))

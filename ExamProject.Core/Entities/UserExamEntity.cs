@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ExamProject.Domain.Entities {
 
-    [Table("UserExams"), PrimaryKey("UserId", "ExamId")]
+    [Table("UserExams"), PrimaryKey(nameof(UserId), nameof(ExamId))]
     public class UserExamEntity {
 
         [ForeignKey("User")]
