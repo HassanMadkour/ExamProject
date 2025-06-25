@@ -1,11 +1,20 @@
+using ExamProject.Domain.Entities;
+using ExamProject.Infrastructure.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
-namespace ExamProject
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
+namespace ExamProject {
+
+    public class Program {
+
+        public static void Main(string[] args) {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>()
+                .AddEntityFrameworkStores<ExamDbContext>().AddDefaultTokenProviders();
+            builder.Services.AddDbContext<ExamDbContext>(
+                Options => Options.UseSqlServer(builder.Configuration.GetConnectionString("ExamDbConnection"))
+                );
 
             // Add services to the container.
 
@@ -16,15 +25,13 @@ namespace ExamProject
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
+            if (app.Environment.IsDevelopment()) {
                 app.MapOpenApi();
             }
 
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
