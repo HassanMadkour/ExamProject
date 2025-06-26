@@ -13,4 +13,8 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ExamProject.Core\ExamProject.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

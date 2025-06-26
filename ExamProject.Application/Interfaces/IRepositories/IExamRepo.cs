@@ -5,6 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ExamProject.Application.Interfaces.IRepositories {
-    internal interface IExamRepo {
+    public interface IExamRepo {
     }
 }
