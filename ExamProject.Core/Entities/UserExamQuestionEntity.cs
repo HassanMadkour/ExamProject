@@ -19,8 +19,7 @@ namespace ExamProject.Domain.Entities {
         [Range(0, 20)]
         public short AnswerScore { get; set; }
 
-        public string Answer { get; set; }
-
+        public string SelectedAnswer {  get; set; }
         public ApplicationUser User { get; set; }
         public QuestionEntity Question { get; set; }
         public ExamEntity Exam { get; set; }
