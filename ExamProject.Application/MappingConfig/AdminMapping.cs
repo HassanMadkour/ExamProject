@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExamProject.Application.Interfaces.IRepositories {
-    public interface IExamRepo {
+namespace ExamProject.Application.MappingConfig
+{
+    public class AdminMapping
+    {
     }
 }
