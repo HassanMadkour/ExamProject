@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using ExamProject.Application.DTOs.AdminDTOs.ExamStudentsDTOs;
+using ExamProject.Application.DTOs.AdminDTOs.StudentDtos;
 using ExamProject.Application.Interfaces.IServices;
 using ExamProject.Application.Interfaces.IUnitOfWorks;
 using ExamProject.Application.Utils;
+using ExamProject.Domain.Entities;
 
 namespace ExamProject.Application.Services {
 
@@ -17,9 +19,12 @@ namespace ExamProject.Application.Services {
 
         public Either<Failure, ExamStudentsDTO> GetExamStudents(int id) {
             try {
-                var result = new { };
-                ExamStudentsDTO dto = _mapper.Map<ExamStudentsDTO>(result);
-                return Either<Failure, ExamStudentsDTO>.Success(dto);
+                ExamEntity? exam = _unitOfWork.ExamRepo.GetById(id);
+                if (exam == null) return Either<Failure, ExamStudentsDTO>.Failure(new NotFoundFailure("Exam not found"));
+                ExamStudentsDTO examStudentsDTO = _mapper.Map<ExamStudentsDTO>(exam);
+                examStudentsDTO.Students = _mapper.Map<List<DisplayStudentDTO>>(_unitOfWork.UserExamRepo.GetUserExamsForUser(id));
+
+                return Either<Failure, ExamStudentsDTO>.Success(examStudentsDTO);
             } catch (Exception ex) {
                 return Either<Failure, ExamStudentsDTO>.Failure(new Failure(ex.Message));
             }

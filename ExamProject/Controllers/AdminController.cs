@@ -1,4 +1,6 @@
-﻿using ExamProject.Application.Interfaces.IServices;
+﻿using ExamProject.Application.DTOs.AdminDTOs.ExamStudentsDTOs;
+using ExamProject.Application.Interfaces.IServices;
+using ExamProject.Application.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExamProject.API.Controllers {
@@ -14,8 +16,11 @@ namespace ExamProject.API.Controllers {
 
         [HttpGet("Exams/{id}/Students")]
         public IActionResult GetAllStudentsByExam(int id) {
-            adminService.GetExamStudents(id);
-            return Ok("Admin");
+            Either<Failure, ExamStudentsDTO> result = adminService.GetExamStudents(id);
+            if (result.IsSuccess)
+                return Ok(result.Right);
+            else
+                return FailureIActionResult.FailureHandler(result.Left);
         }
 
         [HttpGet]
