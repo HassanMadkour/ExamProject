@@ -3,7 +3,7 @@
 namespace ExamProject.Domain.Entities {
 
     public class BaseEnitity : IBaseEntity {
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         public bool IsDeleted { get; set; } = false;
 

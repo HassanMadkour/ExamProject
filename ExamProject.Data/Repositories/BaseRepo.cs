@@ -27,7 +27,7 @@ namespace ExamProject.Infrastructure.Repositories {
         }
 
         public async Task<T?> GetByIdAsync(int id) {
-            return await examDb.Set<T>().FirstOrDefaultAsync(entity => entity.ID == id && !entity.IsDeleted);
+            return await examDb.Set<T>().FirstOrDefaultAsync(entity => entity.Id == id && !entity.IsDeleted);
         }
 
         public async Task Update(T entity) {

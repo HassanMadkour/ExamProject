@@ -114,11 +114,11 @@ namespace ExamProject.Infrastructure.Migrations
 
             modelBuilder.Entity("ExamProject.Domain.Entities.ExamEntity", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -157,18 +157,18 @@ namespace ExamProject.Infrastructure.Migrations
                     b.Property<bool>("isUpdated")
                         .HasColumnType("bit");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("Exams");
                 });
 
             modelBuilder.Entity("ExamProject.Domain.Entities.QuestionEntity", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Choice1")
                         .IsRequired()
@@ -221,7 +221,7 @@ namespace ExamProject.Infrastructure.Migrations
                     b.Property<bool>("isUpdated")
                         .HasColumnType("bit");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.HasIndex("ExamId");
 

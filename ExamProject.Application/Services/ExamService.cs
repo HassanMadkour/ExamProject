@@ -42,7 +42,7 @@ namespace ExamProject.Application.Services
                     Choice4 = question.Choice4,
                     CorrectAnswer = question.CorrectAnswer,
                     Score = (short)question.Score,
-                    ExamId=exam.ID,
+                    ExamId=exam.Id,
                 };
                 await unitOfWork.QuestionRepo.AddAsync(q);
             }

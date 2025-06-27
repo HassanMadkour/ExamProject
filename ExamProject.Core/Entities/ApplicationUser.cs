@@ -1,6 +1,5 @@
 ﻿using ExamProject.Application.Interfaces.IEntity;
 using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ExamProject.Domain.Entities {
 
@@ -19,7 +18,6 @@ namespace ExamProject.Domain.Entities {
 
         public DateTime DeletedDate { get; set; }
 
-        [NotMapped]
-        public int ID { get; set; }
+
     }
 }
