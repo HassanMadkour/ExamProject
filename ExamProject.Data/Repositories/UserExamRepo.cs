@@ -13,8 +13,8 @@ namespace ExamProject.Infrastructure.Repositories {
             return examDb.UserExams.Where(x => x.UserId == userId && x.ExamId == examId).FirstOrDefault();
         }
 
-        public List<UserExamEntity> GetUserExamsForExam(int examId) {
-            return examDb.UserExams.Where(x => x.ExamId == examId).ToList();
+        public List<UserExamEntity> GetUserExamsForExam(int examId, int page = 1, int pageSize = 10) {
+            return examDb.UserExams.Where(x => x.ExamId == examId).Skip((page - 1) * pageSize).Take(pageSize).ToList();
         }
 
         public List<UserExamEntity> GetUserExamsForUser(int userId) {

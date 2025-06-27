@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ExamProject.Application.DTOs.AdminDTOs.ExamStudentsDTOs;
+using ExamProject.Application.DTOs.AdminDTOs.QuestionDTOs;
 using ExamProject.Application.DTOs.AdminDTOs.StudentDtos;
 using ExamProject.Domain.Entities;
 
@@ -22,6 +23,11 @@ namespace ExamProject.Application.MappingConfig {
                 dest.isPassed = src.IsPassed;
                 dest.FullName = src.User.Name;
             });
+
+            CreateMap<CreateQuestionDTO, QuestionEntity>().AfterMap((src, dest) => {
+                dest.ExamId = src.ExamId;
+            });
+
         }
     }
 }

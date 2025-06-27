@@ -8,6 +8,6 @@ namespace ExamProject.Application.Interfaces.IRepositories {
 
         public List<UserExamEntity> GetUserExamsForUser(int userId);
 
-        public List<UserExamEntity> GetUserExamsForExam(int examId);
+        public List<UserExamEntity> GetUserExamsForExam(int examId, int page = 1, int pageSize = 10);
     }
 }
