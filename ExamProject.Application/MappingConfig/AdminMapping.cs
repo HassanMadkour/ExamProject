@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using ExamProject.Application.DTOs.AdminDTOs.ExamDTOs;
 using ExamProject.Application.DTOs.AdminDTOs.ExamStudentsDTOs;
 using ExamProject.Application.DTOs.AdminDTOs.QuestionDTOs;
 using ExamProject.Application.DTOs.AdminDTOs.StudentDtos;
+using ExamProject.Application.DTOs.QuestionDTOs;
 using ExamProject.Domain.Entities;
 
 namespace ExamProject.Application.MappingConfig {
@@ -25,28 +27,18 @@ namespace ExamProject.Application.MappingConfig {
             });
 
             CreateMap<CreateQuestionDTO, QuestionEntity>().AfterMap((src, dest) => {
-                dest.ExamId = src.ExamId;
+                //dest.ExamId = src.ExamId;
             });
-
-namespace ExamProject.Application.MappingConfig
-{
-    public partial class MappingConfig
-    {
-        private void AdminMappingConfig()
-        {
 
             CreateMap<ExamEntity, AddExamDTO>().ReverseMap();
             CreateMap<QuestionEntity, QuestionDTO>().ReverseMap();
-            CreateMap<ExamEntity, GetExamDTO>().AfterMap((s, d) =>
-            {
+            CreateMap<ExamEntity, GetExamDTO>().AfterMap((s, d) => {
                 d.QuestionOfNumber = s.Questions?.Count() ?? 0;
             });
-            CreateMap<ExamEntity, ExamDTO>().AfterMap((s, d) =>
-            {
+            CreateMap<ExamEntity, ExamDTO>().AfterMap((s, d) => {
                 d.QuestionOfNumber = s.Questions?.Count() ?? 0;
             });
             CreateMap<ExamUpdateDTO, ExamEntity>().ReverseMap();
-        }
         }
     }
 }

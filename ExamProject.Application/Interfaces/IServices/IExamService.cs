@@ -1,4 +1,4 @@
-﻿using ExamProject.Application.DTOs.AdminDTOs;
+﻿using ExamProject.Application.DTOs.AdminDTOs.ExamDTOs;
 using ExamProject.Domain.Entities;
 using System;
 using System.Collections.Generic;

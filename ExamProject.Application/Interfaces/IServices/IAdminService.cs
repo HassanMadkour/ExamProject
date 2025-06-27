@@ -5,6 +5,6 @@ namespace ExamProject.Application.Interfaces.IServices {
 
     public interface IAdminService {
 
-        public Either<Failure, ExamStudentsDTO> GetExamStudents(int id);
+        public Task<Either<Failure, ExamStudentsDTO>> GetExamStudents(int id);
     }
 }

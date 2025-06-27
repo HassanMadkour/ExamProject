@@ -1,4 +1,4 @@
-﻿using ExamProject.Application.DTOs.AdminDTOs;
+﻿using ExamProject.Application.DTOs.AdminDTOs.ExamDTOs;
 using ExamProject.Application.Interfaces.IServices;
 using ExamProject.Domain.Entities;
 using Microsoft.AspNetCore.Http;

@@ -15,8 +15,8 @@ namespace ExamProject.API.Controllers {
         }
 
         [HttpGet("Exams/{id}/Students")]
-        public IActionResult GetAllStudentsByExam(int id) {
-            Either<Failure, ExamStudentsDTO> result = adminService.GetExamStudents(id);
+        public async Task<IActionResult> GetAllStudentsByExam(int id) {
+            Either<Failure, ExamStudentsDTO> result = await adminService.GetExamStudents(id);
             if (result.IsSuccess)
                 return Ok(result.Right);
             else

@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ExamProject.Application.DTOs.AdminDTOs.ExamDTOs {
 
-namespace ExamProject.Application.DTOs.AdminDTOs
-{
-    public class ExamDTO
-    {
+    public class ExamDTO {
         public string Name { get; set; }
 
         public short MinDegree { get; set; }

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ExamProject.Application.DTOs.AdminDTOs;
+using ExamProject.Application.DTOs.AdminDTOs.ExamDTOs;
 using ExamProject.Application.Interfaces.IRepositories;
 using ExamProject.Application.Interfaces.IServices;
 using ExamProject.Application.Interfaces.IUnitOfWorks;

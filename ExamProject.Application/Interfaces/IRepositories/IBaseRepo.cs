@@ -2,14 +2,14 @@
 
     public interface IBaseRepo<T> {
 
-         Task AddAsync(T entity);
+        Task AddAsync(T entity);
 
-         Task Update(T entity);
+        Task Update(T entity);
 
-         Task Delete(int id);
+        Task Delete(int id);
 
-         IQueryable<T> GetAllAsync();
+        IQueryable<T> GetAllAsync();
 
-         Task<T> GetByIdAsync(int id);
+        Task<T?> GetByIdAsync(int id);
     }
 }

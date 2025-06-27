@@ -4,9 +4,11 @@ using ExamProject.Infrastructure.Data;
 
 namespace ExamProject.Infrastructure.Repositories {
 
-    public class UserExamRepo : BaseRepo<UserExamEntity>, IUserExamRepo {
+    public class UserExamRepo : IUserExamRepo {
+        private readonly ExamDbContext examDb;
 
-        public UserExamRepo(ExamDbContext examDb) : base(examDb) {
+        public UserExamRepo(ExamDbContext examDb) {
+            this.examDb = examDb;
         }
 
         public UserExamEntity? GetUserExam(int userId, int examId) {

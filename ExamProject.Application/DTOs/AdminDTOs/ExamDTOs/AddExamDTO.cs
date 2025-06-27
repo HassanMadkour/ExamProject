@@ -1,18 +1,10 @@
 ﻿using ExamProject.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ExamProject.Application.DTOs.QuestionDTOs;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ExamProject.Application.DTOs.AdminDTOs
-{
-    public class AddExamDTO
-    {
+namespace ExamProject.Application.DTOs.AdminDTOs.ExamDTOs {
 
+    public class AddExamDTO {
         public string Name { get; set; }
 
         [Range(1, 999), Column(TypeName = "smallint")]
@@ -26,6 +18,6 @@ namespace ExamProject.Application.DTOs.AdminDTOs
 
         public DateTime EndTime { get; set; }
 
-        public virtual ICollection<QuestionDTO> Questions { get; set; }
+        public virtual ICollection<QuestionEntity> Questions { get; set; }
     }
 }
