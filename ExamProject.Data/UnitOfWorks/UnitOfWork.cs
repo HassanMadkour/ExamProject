@@ -2,6 +2,7 @@
 using ExamProject.Application.Interfaces.IUnitOfWorks;
 using ExamProject.Infrastructure.Data;
 using ExamProject.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExamProject.Infrastructure.UnitOfWorks {
 
@@ -10,38 +11,45 @@ namespace ExamProject.Infrastructure.UnitOfWorks {
 
         private IExamRepo? examRepo;
         private IQuestionRepo? questionRepo;
-        private IUserRepo? userRepo;
+        //private IUserRepo? userRepo;
 
         public UnitOfWork(ExamDbContext context) {
             _context = context;
         }
 
-        public IExamRepo ExamRepo {
-            get {
-                if (examRepo == null) {
+        public IExamRepo ExamRepo
+        {
+            get
+            {
+                if (examRepo == null)
+                {
                     examRepo = new ExamRepo(_context);
                 }
                 return examRepo;
             }
         }
 
-        public IQuestionRepo QuestionRepo {
-            get {
-                if (questionRepo == null) {
+        public IQuestionRepo QuestionRepo
+        {
+            get
+            {
+                if (questionRepo == null)
+                {
                     questionRepo = new QuestionRepo(_context);
                 }
                 return questionRepo;
             }
         }
 
-        public IUserRepo UserRepo {
-            get {
-                if (userRepo == null) {
-                    userRepo = new UserRepo(_context);
-                }
-                return userRepo;
-            }
-        }
+        //public IUserRepo UserRepo {
+        //    get {
+        //        if (userRepo == null) {
+        //            userRepo = new UserRepo(_context);
+        //        }
+        //        return userRepo;
+        //    }
+        //}
+
 
         public async Task SaveChangesAsync() {
             await _context.SaveChangesAsync();

@@ -4,9 +4,9 @@ using ExamProject.Infrastructure.Data;
 
 namespace ExamProject.Infrastructure.Repositories {
 
-    public class UserRepo : BaseRepo<ApplicationUser>, IUserRepo {
+    //public class UserRepo : BaseRepo<ApplicationUser>, IUserRepo {
 
-        public UserRepo(ExamDbContext examDb) : base(examDb) {
-        }
-    }
+    //    public UserRepo(ExamDbContext examDb) : base(examDb) {
+    //    }
+    //}
 }
