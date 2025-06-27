@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ExamProject.Application.DTOs.AdminDTOs.ExamStudentsDTOs;
+using ExamProject.Application.DTOs.AdminDTOs.QuestionDTOs;
 using ExamProject.Application.DTOs.AdminDTOs.StudentDtos;
 using ExamProject.Application.Interfaces.IServices;
 using ExamProject.Application.Interfaces.IUnitOfWorks;
@@ -30,13 +31,13 @@ namespace ExamProject.Application.Services {
             }
         }
 
-        //public Either<Failure, CreateQuestionDTO> CreateQuestion(CreateQuestionDTO createQuestionDTO) {
-        //    try {
-        //        QuestionEntity question = _unitOfWork.QuestionRepo.Add(_mapper.Map<QuestionEntity>(createQuestionDTO));
-        //        return _mapper.Map<CreateQuestionDTO>(question);
-        //    } catch (Exception ex) {
-        //        return new CreateQuestionDTO();
-        //    }
-        //}
+        public async Task<Either<Failure, CreateQuestionDTO>> CreateQuestion(CreateQuestionDTO createQuestionDTO) {
+            try {
+                await _unitOfWork.QuestionRepo.AddAsync(_mapper.Map<QuestionEntity>(createQuestionDTO));
+                return Either<Failure, CreateQuestionDTO>.Success(createQuestionDTO);
+            } catch (Exception ex) {
+                return Either<Failure, CreateQuestionDTO>.Failure(new Failure(ex.Message));
+            }
+        }
     }
 }
