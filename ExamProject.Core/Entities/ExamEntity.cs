@@ -20,5 +20,7 @@ namespace ExamProject.Domain.Entities {
         public DateTime EndTime { get; set; }
 
         public virtual ICollection<QuestionEntity> Questions { get; set; }
+
+        public virtual ICollection<UserExamEntity> UserExams { get; set; }
     }
 }

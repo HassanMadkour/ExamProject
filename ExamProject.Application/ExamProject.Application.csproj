@@ -7,10 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="DTOs\" />
+    <Compile Remove="DTOs\AdminDTOs\QuestionDTOs\QuestionDTO.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Validators\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
