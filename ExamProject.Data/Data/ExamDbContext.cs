@@ -18,10 +18,10 @@ namespace ExamProject.Infrastructure.Data {
             base.OnModelCreating(builder);
 
             builder.Entity<UserExamQuestionEntity>()
-    .HasOne(uq => uq.User)
-    .WithMany()
-    .HasForeignKey(uq => uq.UserId)
-    .OnDelete(DeleteBehavior.Restrict);
+                    .HasOne(uq => uq.User)
+                    .WithMany()
+                    .HasForeignKey(uq => uq.Id)
+                    .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<UserExamQuestionEntity>()
                 .HasOne(uq => uq.Question)
