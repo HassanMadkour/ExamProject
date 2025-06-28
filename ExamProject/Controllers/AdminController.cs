@@ -1,4 +1,5 @@
 ﻿using ExamProject.Application.DTOs.AdminDTOs.ExamStudentsDTOs;
+using ExamProject.Application.DTOs.AdminDTOs.QuestionDTOs;
 using ExamProject.Application.Interfaces.IServices;
 using ExamProject.Application.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -23,9 +24,32 @@ namespace ExamProject.API.Controllers {
                 return FailureIActionResult.FailureHandler(result.Left);
         }
 
-        [HttpGet]
-        public string GetAllTeachers() {
-            return "Admin";
+        [HttpPost("Exam/{id}")]
+        public async Task<IActionResult> AddQuestion(CreateQuestionDTO questionDTO) {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            Either<Failure, CreateQuestionDTO> result = await adminService.CreateQuestion(questionDTO);
+            if (result.IsSuccess)
+                return Created( , result.Right);
+            else
+                return FailureIActionResult.FailureHandler(result.Left);
+        }
+
+        [HttpGet("Exam/{id}/Questions")]
+        public async Task<IActionResult> GetAllQuestions(int id) {
+            Either<Failure, List<DisplayQuestionDTO>> result = await adminService.GetAllQuestionsForExam(id);
+            if (result.IsSuccess)
+                return Ok(result.Right);
+            else
+                return FailureIActionResult.FailureHandler(result.Left);
+        }
+
+        [HttpGet("Question/{id}")]
+        public async Task<IActionResult> GetQuestion(int id) {
+            Either<Failure, DisplayQuestionDTO> result = await adminService.GetQuestionById(id);
+            if (result.IsSuccess)
+                return Ok(result.Right);
+            else
+                return FailureIActionResult.FailureHandler(result.Left);
         }
     }
 }

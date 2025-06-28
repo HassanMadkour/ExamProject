@@ -10,6 +10,12 @@ namespace ExamProject.Application.Interfaces.IServices {
 
         public Task<Either<Failure, CreateQuestionDTO>> CreateQuestion(CreateQuestionDTO createQuestionDTO);
 
-        public Task<Either<Failure, List<QuestionDTO>>> GetAllQuestions();
+        public Task<Either<Failure, DisplayQuestionDTO>> GetQuestionById(int id);
+
+        public Task<Either<Failure, List<DisplayQuestionDTO>>> GetAllQuestionsForExam(int examId);
+
+        public Task<Either<Failure, BaseQuestionDTO>> DeleteQuestion(int id);
+
+        public Task<Either<Failure, UpdateQuestionDTO>> UpdateQuestion(int id, UpdateQuestionDTO updateQuestionDTO);
     }
 }

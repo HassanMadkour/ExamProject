@@ -26,7 +26,7 @@ namespace ExamProject.Application.MappingConfig {
             });
 
             CreateMap<CreateQuestionDTO, QuestionEntity>().AfterMap((src, dest) => {
-                //dest.ExamId = src.ExamId;
+                dest.Text = src.QuestionText;
             });
 
             CreateMap<ExamEntity, AddExamDTO>().ReverseMap();

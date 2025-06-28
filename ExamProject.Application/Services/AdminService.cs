@@ -39,5 +39,45 @@ namespace ExamProject.Application.Services {
                 return Either<Failure, CreateQuestionDTO>.Failure(new Failure(ex.Message));
             }
         }
+
+        public async Task<Either<Failure, DisplayQuestionDTO>> GetQuestionById(int id) {
+            try {
+                QuestionEntity? question = await _unitOfWork.QuestionRepo.GetByIdAsync(id);
+                if (question == null) return Either<Failure, DisplayQuestionDTO>.Failure(new NotFoundFailure("Question not found"));
+                return Either<Failure, DisplayQuestionDTO>.Success(_mapper.Map<DisplayQuestionDTO>(question));
+            } catch (Exception ex) {
+                return Either<Failure, DisplayQuestionDTO>.Failure(new Failure(ex.Message));
+            }
+        }
+
+        public async Task<Either<Failure, List<DisplayQuestionDTO>>> GetAllQuestionsForExam(int examId) {
+            try {
+                List<QuestionEntity> questions = _unitOfWork.QuestionRepo.GetQuestionsByExamId(examId);
+                return Either<Failure, List<DisplayQuestionDTO>>.Success(_mapper.Map<List<DisplayQuestionDTO>>(questions));
+            } catch (Exception ex) {
+                return Either<Failure, List<DisplayQuestionDTO>>.Failure(new Failure(ex.Message));
+            }
+        }
+
+        public async Task<Either<Failure, BaseQuestionDTO>> DeleteQuestion(int id) {
+            try {
+                QuestionEntity? question = await _unitOfWork.QuestionRepo.GetByIdAsync(id);
+                if (question == null) return Either<Failure, BaseQuestionDTO>.Failure(new NotFoundFailure("Question not found"));
+                await _unitOfWork.QuestionRepo.Delete(id);
+                return Either<Failure, BaseQuestionDTO>.Success(_mapper.Map<BaseQuestionDTO>(question));
+            } catch (Exception ex) {
+                return Either<Failure, BaseQuestionDTO>.Failure(new Failure(ex.Message));
+            }
+        }
+
+        public async Task<Either<Failure, UpdateQuestionDTO>> UpdateQuestion(int id, UpdateQuestionDTO updateQuestionDTO) {
+            try {
+                if (id != updateQuestionDTO.Id) return Either<Failure, UpdateQuestionDTO>.Failure(new NotFoundFailure("Question not found"));
+                await _unitOfWork.QuestionRepo.Update(_mapper.Map<QuestionEntity>(updateQuestionDTO));
+                return Either<Failure, UpdateQuestionDTO>.Success(updateQuestionDTO);
+            } catch (Exception ex) {
+                return Either<Failure, UpdateQuestionDTO>.Failure(new Failure(ex.Message));
+            }
+        }
     }
 }
