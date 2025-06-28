@@ -8,6 +8,7 @@ namespace ExamProject.Application.DTOs.AdminDTOs.QuestionDTOs {
         public string Choice2 { get; set; }
         public string Choice3 { get; set; }
         public string Choice4 { get; set; }
+        public short Score { get; set; }
 
         [Range(1, 4)]
         public int CorrectAnswer { get; set; }

@@ -57,6 +57,8 @@ namespace ExamProject.Application.Services {
 
         public async Task<Either<Failure, List<DisplayQuestionDTO>>> GetAllQuestionsForExam(int examId) {
             try {
+                ExamEntity? exam = await _unitOfWork.ExamRepo.GetByIdAsync(examId);
+                if (exam == null) return Either<Failure, List<DisplayQuestionDTO>>.Failure(new NotFoundFailure("Exam not found"));
                 List<QuestionEntity> questions = _unitOfWork.QuestionRepo.GetQuestionsByExamId(examId);
                 return Either<Failure, List<DisplayQuestionDTO>>.Success(_mapper.Map<List<DisplayQuestionDTO>>(questions));
             } catch (Exception ex) {
@@ -78,6 +80,9 @@ namespace ExamProject.Application.Services {
 
         public async Task<Either<Failure, UpdateQuestionDTO>> UpdateQuestion(int id, UpdateQuestionDTO updateQuestionDTO) {
             try {
+                QuestionEntity? question = await _unitOfWork.QuestionRepo.GetByIdAsync(id);
+                if (question == null) return Either<Failure, UpdateQuestionDTO>.Failure(new NotFoundFailure("Question not found"));
+                if (question.ExamId != updateQuestionDTO.ExamId) return Either<Failure, UpdateQuestionDTO>.Failure(new NotFoundFailure("Question does not belong to this Exam"));
                 if (id != updateQuestionDTO.Id) return Either<Failure, UpdateQuestionDTO>.Failure(new NotFoundFailure("Question not found"));
                 await _unitOfWork.QuestionRepo.Update(_mapper.Map<QuestionEntity>(updateQuestionDTO));
                 await _unitOfWork.SaveChangesAsync();
