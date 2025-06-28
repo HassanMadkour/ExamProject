@@ -29,7 +29,7 @@ namespace ExamProject {
                 )
                 .AddEntityFrameworkStores<ExamDbContext>().AddDefaultTokenProviders();
             builder.Services.AddDbContext<ExamDbContext>(
-                Options => Options.UseSqlServer(builder.Configuration.GetConnectionString("ExamDbConnection"))
+                Options => Options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("ExamDbConnection"))
                 );
 
             // Add services to the container.
