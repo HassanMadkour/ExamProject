@@ -84,7 +84,7 @@ namespace ExamProject.Application.Services {
                 if (question == null) return Either<Failure, UpdateQuestionDTO>.Failure(new NotFoundFailure("Question not found"));
                 if (question.ExamId != updateQuestionDTO.ExamId) return Either<Failure, UpdateQuestionDTO>.Failure(new NotFoundFailure("Question does not belong to this Exam"));
                 if (id != updateQuestionDTO.Id) return Either<Failure, UpdateQuestionDTO>.Failure(new NotFoundFailure("Question not found"));
-                await _unitOfWork.QuestionRepo.Update(_mapper.Map<QuestionEntity>(updateQuestionDTO));
+                await _unitOfWork.QuestionRepo.Update(_mapper.Map(updateQuestionDTO, question));
                 await _unitOfWork.SaveChangesAsync();
                 return Either<Failure, UpdateQuestionDTO>.Success(updateQuestionDTO);
             } catch (DbUpdateException ex) {
