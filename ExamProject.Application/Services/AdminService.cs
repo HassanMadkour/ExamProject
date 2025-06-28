@@ -6,6 +6,7 @@ using ExamProject.Application.Interfaces.IServices;
 using ExamProject.Application.Interfaces.IUnitOfWorks;
 using ExamProject.Application.Utils;
 using ExamProject.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExamProject.Application.Services {
 
@@ -35,9 +36,12 @@ namespace ExamProject.Application.Services {
             try {
                 if (examId != createQuestionDTO.ExamId) return Either<Failure, UpdateQuestionDTO>.Failure(new NotFoundFailure("Exam not found"));
                 QuestionEntity question = await _unitOfWork.QuestionRepo.AddAsync(_mapper.Map<QuestionEntity>(createQuestionDTO));
+                await _unitOfWork.SaveChangesAsync();
                 return Either<Failure, UpdateQuestionDTO>.Success(_mapper.Map<UpdateQuestionDTO>(question));
-            } catch (Exception ex) {
-                return Either<Failure, UpdateQuestionDTO>.Failure(new Failure(ex.Message));
+            } catch (ArgumentException ex) {
+                return Either<Failure, UpdateQuestionDTO>.Failure(new NotFoundFailure("Exam not found"));
+            } catch (DbUpdateException ex) {
+                return Either<Failure, UpdateQuestionDTO>.Failure(new NotFoundFailure(ex.Message));
             }
         }
 
@@ -65,6 +69,7 @@ namespace ExamProject.Application.Services {
                 QuestionEntity? question = await _unitOfWork.QuestionRepo.GetByIdAsync(id);
                 if (question == null) return Either<Failure, BaseQuestionDTO>.Failure(new NotFoundFailure("Question not found"));
                 await _unitOfWork.QuestionRepo.Delete(id);
+                await _unitOfWork.SaveChangesAsync();
                 return Either<Failure, BaseQuestionDTO>.Success(_mapper.Map<BaseQuestionDTO>(question));
             } catch (Exception ex) {
                 return Either<Failure, BaseQuestionDTO>.Failure(new Failure(ex.Message));
@@ -75,7 +80,10 @@ namespace ExamProject.Application.Services {
             try {
                 if (id != updateQuestionDTO.Id) return Either<Failure, UpdateQuestionDTO>.Failure(new NotFoundFailure("Question not found"));
                 await _unitOfWork.QuestionRepo.Update(_mapper.Map<QuestionEntity>(updateQuestionDTO));
+                await _unitOfWork.SaveChangesAsync();
                 return Either<Failure, UpdateQuestionDTO>.Success(updateQuestionDTO);
+            } catch (DbUpdateException ex) {
+                return Either<Failure, UpdateQuestionDTO>.Failure(new NotFoundFailure(ex.Message));
             } catch (Exception ex) {
                 return Either<Failure, UpdateQuestionDTO>.Failure(new Failure(ex.Message));
             }
