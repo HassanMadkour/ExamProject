@@ -33,8 +33,7 @@ namespace ExamProject {
                         ValidateIssuer = false,
                         ValidateAudience = false,
                         ValidateIssuerSigningKey = true,
-                        //ValidateLifetime = true,
-                        //ClockSkew = TimeSpan.Zero ,
+                        ValidateLifetime = true,     
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings["Key"]))
 
                     };

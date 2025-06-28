@@ -39,7 +39,8 @@ namespace ExamProject.Domain.Expections
                 From = new MailAddress(emailSettings.FromEmail, emailSettings.FromName),
                 Subject = subject,
                 Body = htmlMessage,
-                To = { new MailAddress(email) }
+                To = { new MailAddress(email) },
+                IsBodyHtml = true
             };
 
             await client.SendMailAsync(mailMessage);
