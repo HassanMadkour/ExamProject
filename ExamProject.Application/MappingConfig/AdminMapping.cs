@@ -47,13 +47,16 @@ namespace ExamProject.Application.MappingConfig {
                 dest.ExamId = src.ExamId;
             }).IncludeBase<BaseQuestionDTO, QuestionEntity>();
 
-            CreateMap<ExamEntity, AddExamDTO>().ReverseMap();
+            CreateMap<AddExamDTO, ExamEntity>()
+            .ForMember(dest => dest.Questions, opt => opt.Ignore());
             CreateMap<ExamEntity, GetExamDTO>().AfterMap((s, d) => {
                 d.QuestionOfNumber = s.Questions?.Count() ?? 0;
             });
+            CreateMap<QuestionEntity, QuestionDTO>();
             CreateMap<ExamEntity, ExamDTO>().AfterMap((s, d) => {
                 d.QuestionOfNumber = s.Questions?.Count() ?? 0;
             });
+
             CreateMap<ExamUpdateDTO, ExamEntity>().ReverseMap();
         }
     }

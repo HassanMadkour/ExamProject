@@ -16,6 +16,6 @@ namespace ExamProject.Application.Interfaces.IServices
         Task Delete(int id);
         Task Update(int examId,ExamUpdateDTO examUpdateDTO);
         Task<GetExamDTO> GetExamWithQuestionsAsync(int id);
-        Task<List<GetExamDTO>> SearchAsync(string name);
+        Task<List<ExamDTO>> SearchAsync(string name);
     }
 }

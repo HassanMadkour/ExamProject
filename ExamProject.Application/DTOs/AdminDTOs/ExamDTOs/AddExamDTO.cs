@@ -1,4 +1,5 @@
-﻿using ExamProject.Domain.Entities;
+﻿using ExamProject.Application.DTOs.AdminDTOs.QuestionDTOs;
+using ExamProject.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,6 +19,6 @@ namespace ExamProject.Application.DTOs.AdminDTOs.ExamDTOs {
 
         public DateTime EndTime { get; set; }
 
-        public virtual ICollection<QuestionEntity> Questions { get; set; }
+        public virtual ICollection<QuestionDTO> Questions { get; set; }
     }
 }

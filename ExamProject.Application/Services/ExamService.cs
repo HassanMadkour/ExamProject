@@ -75,11 +75,6 @@ namespace ExamProject.Application.Services
             var examfromDb = await unitOfWork.ExamRepo.GetByIdAsync(examId);
 
             mapper.Map(examUpdateDTO, examfromDb);
-
-            //examfromDb.Name = examUpdateDTO.Name;
-            //examfromDb.Duration = examUpdateDTO.Duration;
-            //examfromDb.StartTime = examUpdateDTO.StartTime;
-            //examfromDb.EndTime= examUpdateDTO.EndTime;
             examfromDb.UpdatedDate =DateTime.Now;
             await unitOfWork.SaveChangesAsync();
         }
@@ -90,11 +85,11 @@ namespace ExamProject.Application.Services
             return mapper.Map<GetExamDTO>(exam);
         }
 
-        public async Task<List<GetExamDTO>> SearchAsync(string name)
+        public async Task<List<ExamDTO>> SearchAsync(string name)
         {
             var exams =  unitOfWork.ExamRepo.GetAllAsync();
             var searchedResult = await exams.Where(e=>e.Name.Contains(name)).ToListAsync();
-            return mapper.Map<List<GetExamDTO>>(searchedResult);
+            return mapper.Map<List<ExamDTO>>(searchedResult);
 
 
         }
