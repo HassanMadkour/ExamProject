@@ -2,14 +2,14 @@
 
     public interface IBaseRepo<T> {
 
-        public void Add(T entity);
+        Task<T> AddAsync(T entity);
 
-        public void Update(T entity);
+        Task Update(T entity);
 
-        public void Delete(T entity);
+        Task<T> Delete(int id);
 
-        public IEnumerable<T> GetAll();
+        IQueryable<T> GetAllAsync();
 
-        public T GetById(int id);
+        Task<T?> GetByIdAsync(int id);
     }
 }

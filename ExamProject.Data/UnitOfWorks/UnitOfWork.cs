@@ -11,6 +11,8 @@ namespace ExamProject.Infrastructure.UnitOfWorks {
         private IExamRepo? examRepo;
         private IQuestionRepo? questionRepo;
         private IUserRepo? userRepo;
+        private IUserExamRepo? userExamRepo;
+        private IUserExamQuestionRepo? userQuestionRepo;
 
         public UnitOfWork(ExamDbContext context) {
             _context = context;
@@ -40,6 +42,24 @@ namespace ExamProject.Infrastructure.UnitOfWorks {
                     userRepo = new UserRepo(_context);
                 }
                 return userRepo;
+            }
+        }
+
+        public IUserExamRepo UserExamRepo {
+            get {
+                if (userExamRepo == null) {
+                    userExamRepo = new UserExamRepo(_context);
+                }
+                return userExamRepo;
+            }
+        }
+
+        public IUserExamQuestionRepo UserQuestionRepo {
+            get {
+                if (userQuestionRepo == null) {
+                    userQuestionRepo = new UserExamQuestionRepo(_context);
+                }
+                return userQuestionRepo;
             }
         }
 

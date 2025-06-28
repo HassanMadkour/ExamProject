@@ -8,5 +8,9 @@ namespace ExamProject.Infrastructure.Repositories {
 
         public QuestionRepo(ExamDbContext examDb) : base(examDb) {
         }
+
+        public List<QuestionEntity> GetQuestionsByExamId(int id) {
+            return examDb.Questions.Where(x => x.ExamId == id).ToList();
+        }
     }
 }

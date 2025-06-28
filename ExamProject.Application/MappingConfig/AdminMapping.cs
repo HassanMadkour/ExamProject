@@ -1,12 +1,60 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using ExamProject.Application.DTOs.AdminDTOs.ExamDTOs;
+using ExamProject.Application.DTOs.AdminDTOs.ExamStudentsDTOs;
+using ExamProject.Application.DTOs.AdminDTOs.QuestionDTOs;
+using ExamProject.Application.DTOs.AdminDTOs.StudentDtos;
+using ExamProject.Domain.Entities;
 
-namespace ExamProject.Application.MappingConfig
-{
-    public class AdminMapping
-    {
+namespace ExamProject.Application.MappingConfig {
+
+    public class AdminMapping : Profile {
+
+        public AdminMapping() {
+            CreateMap<ExamEntity, ExamStudentsDTO>().AfterMap((src, dest) => {
+                dest.ExamName = src.Name;
+                dest.MaxMarks = src.MaxDegree;
+                dest.MinMarks = src.MinDegree;
+                dest.Duration = src.Duration;
+                dest.StartDateTime = src.StartTime;
+                dest.EndDateTime = src.EndTime;
+            });
+
+            CreateMap<UserExamEntity, DisplayStudentDTO>().AfterMap((src, dest) => {
+                dest.Marks = src.TotalScore;
+                dest.isPassed = src.IsPassed;
+                dest.FullName = src.User.Name;
+            });
+
+            CreateMap<BaseQuestionDTO, QuestionEntity>().AfterMap((src, dest) => {
+                dest.Text = src.QuestionText;
+            });
+
+            CreateMap<UpdateQuestionDTO, QuestionEntity>().AfterMap((src, dest) => {
+                dest.Id = src.Id;
+            }).IncludeBase<BaseQuestionDTO, QuestionEntity>();
+
+            CreateMap<QuestionEntity, BaseQuestionDTO>().AfterMap((src, dest) => {
+                dest.QuestionText = src.Text;
+            });
+
+            CreateMap<QuestionEntity, DisplayQuestionDTO>().IncludeBase<QuestionEntity, BaseQuestionDTO>();
+
+            CreateMap<QuestionEntity, UpdateQuestionDTO>().AfterMap((src, dest) => {
+                dest.Id = src.Id;
+            }).IncludeBase<QuestionEntity, BaseQuestionDTO>();
+
+            CreateMap<CreateQuestionDTO, QuestionEntity>().AfterMap((src, dest) => {
+                dest.ExamId = src.ExamId;
+            }).IncludeBase<BaseQuestionDTO, QuestionEntity>();
+
+            CreateMap<ExamEntity, AddExamDTO>().ReverseMap();
+            CreateMap<ExamEntity, GetExamDTO>().AfterMap((s, d) => {
+                d.QuestionOfNumber = s.Questions?.Count() ?? 0;
+            });
+            CreateMap<ExamEntity, ExamDTO>().AfterMap((s, d) => {
+                d.QuestionOfNumber = s.Questions?.Count() ?? 0;
+            });
+            CreateMap<ExamUpdateDTO, ExamEntity>().ReverseMap();
+        }
     }
 }
