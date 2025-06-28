@@ -1,5 +1,7 @@
-﻿namespace ExamProject.Application.Interfaces.IRepositories {
+﻿using ExamProject.Domain.Entities;
 
-    public interface IUserExamQuestionRepo {
+namespace ExamProject.Application.Interfaces.IRepositories {
+
+    public interface IUserExamQuestionRepo : IBaseRepo<UserExamQuestionEntity> {
     }
 }
