@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExamProject.Infrastructure.Migrations
 {
     [DbContext(typeof(ExamDbContext))]
-    [Migration("20250625171330_createTables")]
-    partial class createTables
+    [Migration("20250627191116_addUserExamCollectionListInUserAndExam")]
+    partial class addUserExamCollectionListInUserAndExam
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -252,6 +252,10 @@ namespace ExamProject.Infrastructure.Migrations
                     b.Property<short>("AnswerScore")
                         .HasColumnType("smallint");
 
+                    b.Property<string>("SelectedAnswer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("UserId", "QuestionId", "ExamId");
 
                     b.HasIndex("ExamId");
@@ -406,13 +410,13 @@ namespace ExamProject.Infrastructure.Migrations
             modelBuilder.Entity("ExamProject.Domain.Entities.UserExamEntity", b =>
                 {
                     b.HasOne("ExamProject.Domain.Entities.ExamEntity", "Exam")
-                        .WithMany()
+                        .WithMany("UserExams")
                         .HasForeignKey("ExamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ExamProject.Domain.Entities.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("UserExams")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -500,9 +504,16 @@ namespace ExamProject.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ExamProject.Domain.Entities.ApplicationUser", b =>
+                {
+                    b.Navigation("UserExams");
+                });
+
             modelBuilder.Entity("ExamProject.Domain.Entities.ExamEntity", b =>
                 {
                     b.Navigation("Questions");
+
+                    b.Navigation("UserExams");
                 });
 #pragma warning restore 612, 618
         }

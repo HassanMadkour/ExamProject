@@ -1,11 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ExamProject.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ExamProject.Domain.Entities {
+namespace ExamProject.Application.DTOs.AdminDTOs.ExamDTOs {
 
-    public class ExamEntity : BaseEnitity {
-
-        [MaxLength(50)]
+    public class AddExamDTO {
         public string Name { get; set; }
 
         [Range(1, 999), Column(TypeName = "smallint")]
@@ -20,7 +19,5 @@ namespace ExamProject.Domain.Entities {
         public DateTime EndTime { get; set; }
 
         public virtual ICollection<QuestionEntity> Questions { get; set; }
-
-        public virtual ICollection<UserExamEntity> UserExams { get; set; }
     }
 }

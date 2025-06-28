@@ -1,11 +1,8 @@
-﻿using ExamProject.Application.Interfaces.IEntity;
+﻿namespace ExamProject.Application.Interfaces.IEntity {
 
-namespace ExamProject.Domain.Entities {
-
-    public class BaseEnitity : IBaseEntity {
+    public interface IBaseEntity {
         public int Id { get; set; }
-
-        public bool IsDeleted { get; set; } = false;
+        public bool IsDeleted { get; set; }
 
         public bool isUpdated { get; set; }
 

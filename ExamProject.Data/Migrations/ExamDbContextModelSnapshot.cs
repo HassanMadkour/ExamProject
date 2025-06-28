@@ -37,11 +37,20 @@ namespace ExamProject.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DeletedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
@@ -51,6 +60,7 @@ namespace ExamProject.Infrastructure.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
@@ -76,9 +86,15 @@ namespace ExamProject.Infrastructure.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("isUpdated")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -95,11 +111,11 @@ namespace ExamProject.Infrastructure.Migrations
 
             modelBuilder.Entity("ExamProject.Domain.Entities.ExamEntity", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -138,18 +154,18 @@ namespace ExamProject.Infrastructure.Migrations
                     b.Property<bool>("isUpdated")
                         .HasColumnType("bit");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("Exams");
                 });
 
             modelBuilder.Entity("ExamProject.Domain.Entities.QuestionEntity", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Choice1")
                         .IsRequired()
@@ -202,7 +218,7 @@ namespace ExamProject.Infrastructure.Migrations
                     b.Property<bool>("isUpdated")
                         .HasColumnType("bit");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.HasIndex("ExamId");
 
@@ -407,13 +423,13 @@ namespace ExamProject.Infrastructure.Migrations
             modelBuilder.Entity("ExamProject.Domain.Entities.UserExamEntity", b =>
                 {
                     b.HasOne("ExamProject.Domain.Entities.ExamEntity", "Exam")
-                        .WithMany()
+                        .WithMany("UserExams")
                         .HasForeignKey("ExamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ExamProject.Domain.Entities.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("UserExams")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -501,9 +517,16 @@ namespace ExamProject.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ExamProject.Domain.Entities.ApplicationUser", b =>
+                {
+                    b.Navigation("UserExams");
+                });
+
             modelBuilder.Entity("ExamProject.Domain.Entities.ExamEntity", b =>
                 {
                     b.Navigation("Questions");
+
+                    b.Navigation("UserExams");
                 });
 #pragma warning restore 612, 618
         }

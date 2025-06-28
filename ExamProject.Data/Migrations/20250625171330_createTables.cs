@@ -209,7 +209,7 @@ namespace ExamProject.Infrastructure.Migrations
                         name: "FK_Questions_Exams_ExamId",
                         column: x => x.ExamId,
                         principalTable: "Exams",
-                        principalColumn: "ID");
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -235,7 +235,7 @@ namespace ExamProject.Infrastructure.Migrations
                         name: "FK_UserExams_Exams_ExamId",
                         column: x => x.ExamId,
                         principalTable: "Exams",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -261,13 +261,13 @@ namespace ExamProject.Infrastructure.Migrations
                         name: "FK_UserExamQuestion_Exams_ExamId",
                         column: x => x.ExamId,
                         principalTable: "Exams",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserExamQuestion_Questions_QuestionId",
                         column: x => x.QuestionId,
                         principalTable: "Questions",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
