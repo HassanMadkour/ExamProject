@@ -4,15 +4,13 @@ using ExamProject.Infrastructure.Data;
 
 namespace ExamProject.Infrastructure.Repositories {
 
-    public class UserExamRepo : IUserExamRepo {
-        private readonly ExamDbContext examDb;
+    public class UserExamRepo : BaseRepo<UserExamEntity>, IUserExamRepo {
 
-        public UserExamRepo(ExamDbContext examDb) {
-            this.examDb = examDb;
+        public UserExamRepo(ExamDbContext examDb) : base(examDb) {
         }
 
         public UserExamEntity? GetUserExam(int userId, int examId) {
-            return examDb.UserExams.Where(x => x.UserId == userId && x.ExamId == examId).FirstOrDefault();
+            return examDb.UserExams.Where(x => x.Id == userId && x.ExamId == examId).FirstOrDefault();
         }
 
         public List<UserExamEntity> GetUserExamsForExam(int examId, int page = 1, int pageSize = 10) {
@@ -20,7 +18,7 @@ namespace ExamProject.Infrastructure.Repositories {
         }
 
         public List<UserExamEntity> GetUserExamsForUser(int userId) {
-            return examDb.UserExams.Where(x => x.UserId == userId).ToList();
+            return examDb.UserExams.Where(x => x.Id == userId).ToList();
         }
     }
 }

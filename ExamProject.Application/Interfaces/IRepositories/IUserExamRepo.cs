@@ -2,7 +2,7 @@
 
 namespace ExamProject.Application.Interfaces.IRepositories {
 
-    public interface IUserExamRepo {
+    public interface IUserExamRepo : IBaseRepo<UserExamEntity> {
 
         public UserExamEntity? GetUserExam(int userId, int examId);
 

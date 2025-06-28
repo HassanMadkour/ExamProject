@@ -3,11 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ExamProject.Domain.Entities {
 
-    [Table("UserExams"), PrimaryKey(nameof(UserId), nameof(ExamId))]
-    public class UserExamEntity {
-
-        [ForeignKey("User")]
-        public int UserId { get; set; }
+    [Table("UserExams"), PrimaryKey(nameof(Id), nameof(ExamId))]
+    public class UserExamEntity : BaseEnitity {
 
         [ForeignKey("Exam")]
         public int ExamId { get; set; }
@@ -17,7 +14,9 @@ namespace ExamProject.Domain.Entities {
 
         public bool? IsPassed { get; set; }
 
+        [ForeignKey("Id")]
         public virtual ApplicationUser User { get; set; }
+
         public virtual ExamEntity Exam { get; set; }
     }
 }
