@@ -20,8 +20,8 @@ namespace ExamProject.Domain.Entities {
         [MaxLength(150)]
         public string Choice4 { get; set; }
 
-        [MaxLength(150)]
-        public string CorrectAnswer { get; set; }
+        [Range(1, 4)]
+        public int CorrectAnswer { get; set; }
 
         [Range(0, 20)]
         public short Score { get; set; }

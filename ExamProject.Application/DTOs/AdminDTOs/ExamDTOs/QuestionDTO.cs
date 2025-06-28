@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace ExamProject.Application.DTOs.AdminDTOs.ExamDTOs
-{
-    public class QuestionDTO
-    {
+namespace ExamProject.Application.DTOs.AdminDTOs.ExamDTOs {
+
+    public class QuestionDTO {
 
         [MaxLength(150)]
         public string Text { get; set; }
@@ -25,8 +19,8 @@ namespace ExamProject.Application.DTOs.AdminDTOs.ExamDTOs
         [MaxLength(150)]
         public string Choice4 { get; set; }
 
-        [MaxLength(150)]
-        public string CorrectAnswer { get; set; }
+        [Range(1, 4)]
+        public int CorrectAnswer { get; set; }
 
         [Range(0, 20)]
         public short Score { get; set; }
