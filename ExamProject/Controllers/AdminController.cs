@@ -25,11 +25,11 @@ namespace ExamProject.API.Controllers {
         }
 
         [HttpPost("Exam/{id}")]
-        public async Task<IActionResult> AddQuestion(CreateQuestionDTO questionDTO) {
+        public async Task<IActionResult> AddQuestion(int id, CreateQuestionDTO questionDTO) {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            Either<Failure, CreateQuestionDTO> result = await adminService.CreateQuestion(questionDTO);
+            Either<Failure, UpdateQuestionDTO> result = await adminService.CreateQuestion(id, questionDTO);
             if (result.IsSuccess)
-                return Created( , result.Right);
+                return CreatedAtAction(nameof(GetQuestion), new { id = result.Right.Id }, result.Right);
             else
                 return FailureIActionResult.FailureHandler(result.Left);
         }
@@ -46,6 +46,25 @@ namespace ExamProject.API.Controllers {
         [HttpGet("Question/{id}")]
         public async Task<IActionResult> GetQuestion(int id) {
             Either<Failure, DisplayQuestionDTO> result = await adminService.GetQuestionById(id);
+            if (result.IsSuccess)
+                return Ok(result.Right);
+            else
+                return FailureIActionResult.FailureHandler(result.Left);
+        }
+
+        [HttpPut("Question/{id}")]
+        public async Task<IActionResult> UpdateQuestion(int id, UpdateQuestionDTO questionDTO) {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            Either<Failure, UpdateQuestionDTO> result = await adminService.UpdateQuestion(id, questionDTO);
+            if (result.IsSuccess)
+                return NoContent();
+            else
+                return FailureIActionResult.FailureHandler(result.Left);
+        }
+
+        [HttpDelete("Question/{id}")]
+        public async Task<IActionResult> DeleteQuestion(int id) {
+            Either<Failure, BaseQuestionDTO> result = await adminService.DeleteQuestion(id);
             if (result.IsSuccess)
                 return Ok(result.Right);
             else

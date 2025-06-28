@@ -25,9 +25,27 @@ namespace ExamProject.Application.MappingConfig {
                 dest.FullName = src.User.Name;
             });
 
-            CreateMap<CreateQuestionDTO, QuestionEntity>().AfterMap((src, dest) => {
+            CreateMap<BaseQuestionDTO, QuestionEntity>().AfterMap((src, dest) => {
                 dest.Text = src.QuestionText;
             });
+
+            CreateMap<UpdateQuestionDTO, QuestionEntity>().AfterMap((src, dest) => {
+                dest.Id = src.Id;
+            }).IncludeBase<BaseQuestionDTO, QuestionEntity>();
+
+            CreateMap<QuestionEntity, BaseQuestionDTO>().AfterMap((src, dest) => {
+                dest.QuestionText = src.Text;
+            });
+
+            CreateMap<QuestionEntity, DisplayQuestionDTO>().IncludeBase<QuestionEntity, BaseQuestionDTO>();
+
+            CreateMap<QuestionEntity, UpdateQuestionDTO>().AfterMap((src, dest) => {
+                dest.Id = src.Id;
+            }).IncludeBase<QuestionEntity, BaseQuestionDTO>();
+
+            CreateMap<CreateQuestionDTO, QuestionEntity>().AfterMap((src, dest) => {
+                dest.ExamId = src.ExamId;
+            }).IncludeBase<BaseQuestionDTO, QuestionEntity>();
 
             CreateMap<ExamEntity, AddExamDTO>().ReverseMap();
             CreateMap<ExamEntity, GetExamDTO>().AfterMap((s, d) => {

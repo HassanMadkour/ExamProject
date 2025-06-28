@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ExamProject.Domain.Entities;
-using ExamProject.Application.DTOs.QuestionDTOs;
+﻿using ExamProject.Domain.Entities;
 
-namespace ExamProject.Application.DTOs.AdminDTOs.ExamDTOs
-{
-    public class GetExamDTO
-    {
+namespace ExamProject.Application.DTOs.AdminDTOs.ExamDTOs {
+
+    public class GetExamDTO {
         public string Name { get; set; }
 
         public short MinDegree { get; set; }
@@ -23,7 +14,6 @@ namespace ExamProject.Application.DTOs.AdminDTOs.ExamDTOs
 
         public DateTime EndTime { get; set; }
         public int QuestionOfNumber { get; set; }
-        public virtual ICollection<QuestionDTO> Questions { get; set; }
-
+        public virtual ICollection<QuestionEntity> Questions { get; set; }
     }
 }

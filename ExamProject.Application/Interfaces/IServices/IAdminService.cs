@@ -8,7 +8,7 @@ namespace ExamProject.Application.Interfaces.IServices {
 
         public Task<Either<Failure, ExamStudentsDTO>> GetExamStudents(int id);
 
-        public Task<Either<Failure, CreateQuestionDTO>> CreateQuestion(CreateQuestionDTO createQuestionDTO);
+        public Task<Either<Failure, UpdateQuestionDTO>> CreateQuestion(int examId, CreateQuestionDTO createQuestionDTO);
 
         public Task<Either<Failure, DisplayQuestionDTO>> GetQuestionById(int id);
 

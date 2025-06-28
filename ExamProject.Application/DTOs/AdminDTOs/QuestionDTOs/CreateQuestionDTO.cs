@@ -2,5 +2,6 @@
 
     public class CreateQuestionDTO : BaseQuestionDTO {
         public int ExamId { get; set; }
+
     }
 }

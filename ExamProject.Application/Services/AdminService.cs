@@ -31,12 +31,13 @@ namespace ExamProject.Application.Services {
             }
         }
 
-        public async Task<Either<Failure, CreateQuestionDTO>> CreateQuestion(CreateQuestionDTO createQuestionDTO) {
+        public async Task<Either<Failure, UpdateQuestionDTO>> CreateQuestion(int examId, CreateQuestionDTO createQuestionDTO) {
             try {
-                await _unitOfWork.QuestionRepo.AddAsync(_mapper.Map<QuestionEntity>(createQuestionDTO));
-                return Either<Failure, CreateQuestionDTO>.Success(createQuestionDTO);
+                if (examId != createQuestionDTO.ExamId) return Either<Failure, UpdateQuestionDTO>.Failure(new NotFoundFailure("Exam not found"));
+                QuestionEntity question = await _unitOfWork.QuestionRepo.AddAsync(_mapper.Map<QuestionEntity>(createQuestionDTO));
+                return Either<Failure, UpdateQuestionDTO>.Success(_mapper.Map<UpdateQuestionDTO>(question));
             } catch (Exception ex) {
-                return Either<Failure, CreateQuestionDTO>.Failure(new Failure(ex.Message));
+                return Either<Failure, UpdateQuestionDTO>.Failure(new Failure(ex.Message));
             }
         }
 
