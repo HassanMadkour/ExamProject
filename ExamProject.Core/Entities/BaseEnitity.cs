@@ -9,7 +9,7 @@ namespace ExamProject.Domain.Entities {
 
         public bool isUpdated { get; set; } = false;
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now; 
 
         public DateTime? UpdatedDate { get; set; }
 

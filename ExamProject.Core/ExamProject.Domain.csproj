@@ -8,11 +8,11 @@
 
   <ItemGroup>
     <Folder Include="Enums\" />
-    <Folder Include="Expections\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.6" />
   </ItemGroup>
 
 </Project>
