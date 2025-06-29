@@ -9,8 +9,8 @@ namespace ExamProject.Domain.Entities {
         [ForeignKey("Exam")]
         public int ExamId { get; set; }
 
-        public int TotalScore { get; set; }
-        public bool IsCompleted { get; set; }
+        public int TotalScore { get; set; } = 0;
+        public bool IsCompleted { get; set; } = false;
 
         public bool? IsPassed { get; set; }
 

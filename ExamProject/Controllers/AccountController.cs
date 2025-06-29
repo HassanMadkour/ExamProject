@@ -5,6 +5,7 @@ using System.Text;
 using System.Web;
 using AutoMapper;
 using ExamProject.Application.DTOs.AccountDTOs;
+using ExamProject.Application.Interfaces.IUnitOfWorks;
 using ExamProject.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -23,15 +24,17 @@ namespace ExamProject.API.Controllers {
         private readonly IConfiguration config;
         private readonly IEmailSender emailSender;
         private readonly IMapper mapper;
+        private readonly IUnitOfWork unitOfWork;
 
 
         public AccountController(UserManager<ApplicationUser> _userManager 
-            , IConfiguration _config ,IEmailSender _emailSender , IMapper _mapper)
+            , IConfiguration _config ,IEmailSender _emailSender , IMapper _mapper , IUnitOfWork _unitOfWork)
         {
             userManager = _userManager;
             config = _config;
             emailSender = _emailSender;
             mapper = _mapper;
+            unitOfWork = _unitOfWork;
         }
 
 
@@ -49,6 +52,17 @@ namespace ExamProject.API.Controllers {
             //var encodedToken = HttpUtility.UrlEncode(token);
             var confirmationLink = $"http://localhost:4200/Account/ConfirmEmail?userId={user.Id}&token={token}";
             await emailSender.SendEmailAsync(user.Email, "Confirm your Email", $"Please confirm your account by clicking this link: <a href=\"{confirmationLink}\">Confirm</a>");
+            var examIds = unitOfWork.ExamRepo.GetIdsForAllExams();
+            foreach (var examId in examIds)
+            {
+                var userExam = new UserExamEntity();
+                userExam.Id = user.Id;
+                userExam.ExamId = examId;
+                await unitOfWork.UserExamRepo.AddAsync(userExam);
+
+            }
+
+            await unitOfWork.SaveChangesAsync();
             return Ok("Registration successful! Please confirm your email before logging in.");
         }
 

@@ -9,5 +9,9 @@ namespace ExamProject.Infrastructure.Repositories {
 
         public ExamRepo(ExamDbContext examDb) : base(examDb) {
         }
+        public List<int> GetIdsForAllExams()
+        {
+            return examDb.Exams.Select(e =>  e.Id).ToList();
+        }
     }
 }

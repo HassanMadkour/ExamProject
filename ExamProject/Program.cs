@@ -27,16 +27,13 @@ namespace ExamProject {
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(
               Options => {
             Options.Password.RequireNonAlphanumeric = false;
-                    }) .AddEntityFrameworkStores<ExamDbContext>().AddDefaultTokenProviders();
-                Options => {
-                    Options.Password.RequireNonAlphanumeric = true;
-                    Options.Password.RequireLowercase = true;
-                    Options.Password.RequireUppercase = true;
-                    Options.Password.RequireDigit = true;
-                }
-
-                )
-                .AddEntityFrameworkStores<ExamDbContext>().AddDefaultTokenProviders();
+                  Options.Password.RequireNonAlphanumeric = true;
+                  Options.Password.RequireLowercase = true;
+                  Options.Password.RequireUppercase = true;
+                  Options.Password.RequireDigit = true;
+              }) .AddEntityFrameworkStores<ExamDbContext>().AddDefaultTokenProviders();
+      
+                
             builder.Services.AddDbContext<ExamDbContext>(
                 Options => Options.UseSqlServer(builder.Configuration.GetConnectionString("ExamDbConnection"))
                 );
