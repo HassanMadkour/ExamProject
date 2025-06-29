@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using ExamProject.Application.DTOs.AdminDTOs.ExamDTOs;
+using ExamProject.Application.DTOs.AdminDTOs.QuestionDTOs;
 using ExamProject.Application.Interfaces.IRepositories;
 using ExamProject.Application.Interfaces.IServices;
 using ExamProject.Application.Interfaces.IUnitOfWorks;
+using ExamProject.Application.Utils;
 using ExamProject.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
@@ -50,10 +52,16 @@ namespace ExamProject.Application.Services
              
         }
 
-        public async Task Delete(int id)
+        public async Task<ExamDTO?> Delete(int id)
         {
-            await unitOfWork.ExamRepo.Delete(id);
+            var exam =await unitOfWork.ExamRepo.Delete(id);
+
+            if (exam == null) {
+                return null;
+            }
             await unitOfWork.SaveChangesAsync();
+            return mapper.Map<ExamDTO>(exam);
+           
 
         }
 
@@ -79,18 +87,22 @@ namespace ExamProject.Application.Services
             await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<GetExamDTO> GetExamWithQuestionsAsync(int id)
+        public async Task<GetExamDTO?> GetExamWithQuestionsAsync(int id)
         {
-            var exam = await unitOfWork.ExamRepo.GetByIdAsync(id);
+            var exam =await unitOfWork.ExamRepo.GetByIdAsync(id);
+            if(exam  == null)
+            {
+                return null;
+            }
+            exam.Questions =  exam.Questions.Where(q=>!q.IsDeleted).ToList();
             return mapper.Map<GetExamDTO>(exam);
         }
 
         public async Task<List<ExamDTO>> SearchAsync(string name)
         {
-            var exams =  unitOfWork.ExamRepo.GetAllAsync();
-            var searchedResult = await exams.Where(e=>e.Name.Contains(name)).ToListAsync();
+            var exams = unitOfWork.ExamRepo.GetAllAsync();
+            var searchedResult = await exams.Where(e => e.Name.Contains(name)).ToListAsync();            
             return mapper.Map<List<ExamDTO>>(searchedResult);
-
 
         }
     }

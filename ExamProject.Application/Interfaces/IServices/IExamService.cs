@@ -1,4 +1,5 @@
 ﻿using ExamProject.Application.DTOs.AdminDTOs.ExamDTOs;
+using ExamProject.Application.Utils;
 using ExamProject.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,9 @@ namespace ExamProject.Application.Interfaces.IServices
         Task<List<ExamDTO>> GetAllExamAsync();
         Task<ExamDTO> GetExamByIdAsync(int id);
         Task AddAsync(AddExamDTO examDTO);
-        Task Delete(int id);
+        Task<ExamDTO> Delete(int id);
         Task Update(int examId,ExamUpdateDTO examUpdateDTO);
         Task<GetExamDTO> GetExamWithQuestionsAsync(int id);
-        Task<List<ExamDTO>> SearchAsync(string name);
+        Task< List<ExamDTO>> SearchAsync(string name);
     }
 }
