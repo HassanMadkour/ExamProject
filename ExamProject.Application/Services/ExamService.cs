@@ -1,25 +1,25 @@
 ﻿using AutoMapper;
 using ExamProject.Application.DTOs.AdminDTOs.ExamDTOs;
+using ExamProject.Application.DTOs.StudentDTOs.ExamDTOs;
+using ExamProject.Application.DTOs.StudentDTOs.QuestionDTOs;
 using ExamProject.Application.Interfaces.IRepositories;
 using ExamProject.Application.Interfaces.IServices;
 using ExamProject.Application.Interfaces.IUnitOfWorks;
 using ExamProject.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ExamProject.Application.Services
 {
-    public class ExamService :IExamService
+    public class ExamService : IExamService
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
 
-        public ExamService(IUnitOfWork unitOfWork,IMapper mapper) 
+        public ExamService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
@@ -32,7 +32,6 @@ namespace ExamProject.Application.Services
             await unitOfWork.SaveChangesAsync();
             foreach (var question in examDTO.Questions)
             {
-
                 QuestionEntity q = new QuestionEntity
                 {
                     Text = question.Text,
@@ -42,45 +41,38 @@ namespace ExamProject.Application.Services
                     Choice4 = question.Choice4,
                     CorrectAnswer = question.CorrectAnswer,
                     Score = (short)question.Score,
-                    ExamId=exam.Id,
+                    ExamId = exam.Id,
                 };
                 await unitOfWork.QuestionRepo.AddAsync(q);
             }
             await unitOfWork.SaveChangesAsync();
-             
         }
 
         public async Task Delete(int id)
         {
             await unitOfWork.ExamRepo.Delete(id);
             await unitOfWork.SaveChangesAsync();
-
         }
 
         public async Task<List<ExamDTO>> GetAllExamAsync()
         {
-            var Exams =  unitOfWork.ExamRepo.GetAllAsync();
-            var examList = await Exams.ToListAsync();
-            return  mapper.Map<List<ExamDTO>>(examList);
+            var exams = unitOfWork.ExamRepo.GetAllAsync();
+            var examList = await exams.ToListAsync();
+            return mapper.Map<List<ExamDTO>>(examList);
         }
 
         public async Task<ExamDTO> GetExamByIdAsync(int id)
         {
             var exam = await unitOfWork.ExamRepo.GetByIdAsync(id);
-            return  mapper.Map<ExamDTO>(exam);
+            return mapper.Map<ExamDTO>(exam);
         }
 
-        public async Task Update(int examId,ExamUpdateDTO examUpdateDTO)
+        public async Task Update(int examId, ExamUpdateDTO examUpdateDTO)
         {
             var examfromDb = await unitOfWork.ExamRepo.GetByIdAsync(examId);
 
             mapper.Map(examUpdateDTO, examfromDb);
-
-            //examfromDb.Name = examUpdateDTO.Name;
-            //examfromDb.Duration = examUpdateDTO.Duration;
-            //examfromDb.StartTime = examUpdateDTO.StartTime;
-            //examfromDb.EndTime= examUpdateDTO.EndTime;
-            examfromDb.UpdatedDate =DateTime.Now;
+            examfromDb.UpdatedDate = DateTime.Now;
             await unitOfWork.SaveChangesAsync();
         }
 
@@ -92,11 +84,109 @@ namespace ExamProject.Application.Services
 
         public async Task<List<GetExamDTO>> SearchAsync(string name)
         {
-            var exams =  unitOfWork.ExamRepo.GetAllAsync();
-            var searchedResult = await exams.Where(e=>e.Name.Contains(name)).ToListAsync();
+            var exams = unitOfWork.ExamRepo.GetAllAsync();
+            var searchedResult = await exams.Where(e => e.Name.Contains(name)).ToListAsync();
             return mapper.Map<List<GetExamDTO>>(searchedResult);
-
-
         }
+
+
+        public async Task<List<ExamListDTO>> GetAllUncompletedExamsAsync(int userId)
+        {
+            var allExams = unitOfWork.ExamRepo.GetAllAsync();
+            var userExams = unitOfWork.UserExamRepo.GetUserExamsForUser(userId);
+            var result = new List<ExamListDTO>();
+
+            foreach (var exam in allExams)
+            {
+                var userExam = userExams.FirstOrDefault(userEx => userEx.ExamId == exam.Id);
+                bool isPassed = (userExam?.TotalScore ?? 0) >= exam.MinDegree;
+
+                if (!isPassed)
+                {
+                    var dto = mapper.Map<ExamListDTO>(exam);
+                    dto.IsPassed = isPassed;
+                    result.Add(dto);
+                }
+            }
+            return result;
+        }
+
+        public async Task<List<StudentQuestionDTO>> GetExamQuestionsAsync(int examId)
+        {
+            var questions = unitOfWork.QuestionRepo.GetAllAsync().Where(q => q.ExamId == examId);
+            return mapper.Map<List<StudentQuestionDTO>>(questions);
+        }
+
+        public async Task<SubmitExamResultDTO> SubmitExamAsync(SubmitAnswerDTO model)
+        {
+            int totalScore = 0;
+            var result = new List<QuestionResultDTO>();
+
+            foreach (var answer in model.Answers)
+            {
+                var question = await unitOfWork.QuestionRepo.GetByIdAsync(answer.QuestionId);
+                if (question == null || question.ExamId != model.ExamId) continue;
+
+                bool isCorrect = question.CorrectAnswer == answer.SelectedAnswer;
+                int score = isCorrect ? question.Score : 0;
+                totalScore += score;
+                var existing = await unitOfWork.UserQuestionRepo
+                    .GetByUserExamQuestionAsync(model.UserId, model.ExamId, question.Id);
+
+                if (existing == null)
+                {
+                    await unitOfWork.UserQuestionRepo.AddAsync(new UserExamQuestionEntity
+                    {
+                        Id = model.UserId,
+                        ExamId = model.ExamId,
+                        QuestionId = question.Id,
+                        SelectedAnswer = answer.SelectedAnswer,
+                        AnswerScore = (short)score
+                    });
+                }
+                else
+                {
+                    existing.SelectedAnswer = answer.SelectedAnswer;
+                    existing.AnswerScore = (short)score;
+                }
+
+                result.Add(new QuestionResultDTO
+                {
+                    QuestionId = question.Id,
+                    SelectedAnswer = answer.SelectedAnswer,
+                    IsCorrect = isCorrect,
+                    Score = score
+                });
+            }
+
+            var userExam = unitOfWork.UserExamRepo.GetUserExam(model.UserId, model.ExamId);
+            if (userExam != null)
+            {
+                userExam.TotalScore = (short)totalScore;
+                userExam.IsCompleted = true;
+            }
+            else
+            {
+                await unitOfWork.UserExamRepo.AddAsync(new UserExamEntity
+                {
+                    Id = model.UserId,
+                    ExamId = model.ExamId,
+                    IsCompleted = true,
+                    TotalScore = (short)totalScore
+                });
+            }
+
+            await unitOfWork.SaveChangesAsync();
+
+            return new SubmitExamResultDTO
+            {
+                ExamId = model.ExamId,
+                UserId = model.UserId,
+                TotalScore = totalScore,
+                Details = result
+            };
+        }
+
+    
     }
 }
