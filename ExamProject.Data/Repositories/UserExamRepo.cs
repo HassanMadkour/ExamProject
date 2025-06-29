@@ -9,6 +9,10 @@ namespace ExamProject.Infrastructure.Repositories {
         public UserExamRepo(ExamDbContext examDb) : base(examDb) {
         }
 
+        public List<UserExamEntity> GetCompletedUserExamsForUser(int userId, int page = 1, int pageSize = 10) {
+            return examDb.UserExams.Where(x => x.Id == userId && x.IsPassed == true).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        }
+
         public UserExamEntity? GetUserExam(int userId, int examId) {
             return examDb.UserExams.Where(x => x.Id == userId && x.ExamId == examId).FirstOrDefault();
         }

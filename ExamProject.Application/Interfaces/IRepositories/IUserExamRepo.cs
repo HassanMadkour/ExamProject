@@ -9,5 +9,7 @@ namespace ExamProject.Application.Interfaces.IRepositories {
         public List<UserExamEntity> GetUserExamsForUser(int userId);
 
         public List<UserExamEntity> GetUserExamsForExam(int examId, int page = 1, int pageSize = 10);
+
+        public List<UserExamEntity> GetCompletedUserExamsForUser(int userId, int page = 1, int pageSize = 10);
     }
 }

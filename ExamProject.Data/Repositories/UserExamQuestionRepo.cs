@@ -9,8 +9,12 @@ namespace ExamProject.Infrastructure.Repositories {
 
         public UserExamQuestionRepo(ExamDbContext examDb) : base(examDb) {
         }
-        public async Task<UserExamQuestionEntity?> GetByUserExamQuestionAsync(int userId, int examId, int questionId)
-        {
+
+        public List<UserExamQuestionEntity> GetQuestionByUserExam(int userId, int examId) {
+            return examDb.UserExamQuestions.Where(uq => uq.Id == userId && uq.ExamId == examId).ToList();
+        }
+
+        public async Task<UserExamQuestionEntity?> GetByUserExamQuestionAsync(int userId, int examId, int questionId) {
             return await examDb.UserExamQuestions
                 .FirstOrDefaultAsync(uq => uq.Id == userId && uq.ExamId == examId && uq.QuestionId == questionId);
         }

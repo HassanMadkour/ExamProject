@@ -52,7 +52,7 @@ namespace ExamProject.Application.MappingConfig {
             CreateMap<ExamEntity, GetExamDTO>().AfterMap((s, d) => {
                 d.QuestionOfNumber = s.Questions?.Count() ?? 0;
             });
-            CreateMap<QuestionEntity, QuestionDTO>();
+
             CreateMap<ExamEntity, ExamDTO>().AfterMap((s, d) => {
                 d.QuestionOfNumber = s.Questions?.Count() ?? 0;
             });

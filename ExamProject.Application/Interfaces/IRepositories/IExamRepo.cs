@@ -6,5 +6,7 @@ namespace ExamProject.Application.Interfaces.IRepositories {
 
         public List<int> GetIdsForAllExams();
 
+
+
     }
 }

@@ -1,84 +1,67 @@
 ﻿using ExamProject.Application.DTOs.AdminDTOs.ExamDTOs;
 using ExamProject.Application.Interfaces.IServices;
-using ExamProject.Domain.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ExamProject.API.Controllers
-{
+namespace ExamProject.API.Controllers {
     [Route("api/[controller]")]
     [ApiController]
-    public class ExamController : ControllerBase
-    {
+    public class ExamController : ControllerBase {
         private readonly IExamService service;
 
-        public ExamController(IExamService service)
-        {
+        public ExamController(IExamService service) {
             this.service = service;
         }
 
         //get AllExam => name/min,max degree / duration /start,end Time
         [HttpGet]
-        public async Task<IActionResult> GetAllExam()
-        {
+        public async Task<IActionResult> GetAllExam() {
             return Ok(await service.GetAllExamAsync());
         }
 
         //get Exam => name/min,max degree / duration /start,end Time
         [HttpGet("Id")]
-        public async Task<IActionResult> GetExamById(int examId)
-        {
+        public async Task<IActionResult> GetExamById(int examId) {
             if (examId <= 0) return BadRequest();
-            try
-            {
+            try {
                 var exam = await service.GetExamByIdAsync(examId);
                 if (exam == null) return BadRequest();
                 return Ok(exam);
-            }
-            catch (Exception ex) 
-            {
+            } catch (Exception ex) {
                 return BadRequest();
             }
-          
+
         }
 
 
         //get Exam with Questions
         [HttpGet("ExamWithQuestions")]
-        public async Task<IActionResult> GetExamWithQuestions(int id)
-        {
+        public async Task<IActionResult> GetExamWithQuestions(int id) {
             if (id <= 0) return BadRequest();
-            try
-            {
+            try {
                 var examWithQuest = await service.GetExamWithQuestionsAsync(id);
                 return Ok(examWithQuest);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 return BadRequest();
             }
-            
+
         }
 
         [HttpGet("Search/ExamName")]
-        public async Task<IActionResult> Search(string examName)
-        {
-            
-            try
-            {
+        public async Task<IActionResult> Search(string examName) {
+
+            try {
                 if (examName == null) return BadRequest();
                 var result = await service.SearchAsync(examName);
                 return Ok(result);
 
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 return BadRequest();
             }
         }
 
         //Add Exam With Question
         [HttpPost]
-        public async Task<IActionResult> AddExam([FromBody]AddExamDTO examDTO)
-        {
+        public async Task<IActionResult> AddExam([FromBody] AddExamDTO examDTO) {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
@@ -87,40 +70,32 @@ namespace ExamProject.API.Controllers
 
         }
         [HttpPut("id")]
-        public async Task<IActionResult> Update(int examid, ExamUpdateDTO examDto)
-        {
-            if(examid <= 0) return BadRequest();
-            try
-            {
+        public async Task<IActionResult> Update(int examid, ExamUpdateDTO examDto) {
+            if (examid <= 0) return BadRequest();
+            try {
                 await service.Update(examid, examDto);
                 return NoContent();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 return BadRequest();
             }
 
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(int id)
-        {
-            try
-            {
+        public async Task<IActionResult> Delete(int id) {
+            try {
                 if (id <= 0) return BadRequest();
                 await service.Delete(id);
                 return NoContent();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 return BadRequest();
             }
-           
+
         }
 
-       
 
-       
+
+
 
 
 

@@ -24,7 +24,7 @@ namespace ExamProject.Application.Services {
             await unitOfWork.SaveChangesAsync();
             foreach (var question in examDTO.Questions) {
                 QuestionEntity q = new QuestionEntity {
-                    Text = question.Text,
+                    Text = question.QuestionText,
                     Choice1 = question.Choice1,
                     Choice2 = question.Choice2,
                     Choice3 = question.Choice3,
@@ -157,6 +157,14 @@ namespace ExamProject.Application.Services {
 
         Task<List<GetExamDTO>> IExamService.SearchAsync(string name) {
             throw new NotImplementedException();
+        }
+
+        public ExamDetailsDTO GetExamDetails(int userId, int examId) {
+            List<UserExamQuestionEntity> quesions = unitOfWork.UserQuestionRepo.GetQuestionByUserExam(userId, examId);
+            UserExamEntity userExam = unitOfWork.UserExamRepo.GetUserExam(userId, examId);
+            ExamDetailsDTO dto = mapper.Map<ExamDetailsDTO>(userExam);
+            dto.Questions = mapper.Map<List<QuestionDetailsDTO>>(quesions);
+            return dto;
         }
     }
 }
