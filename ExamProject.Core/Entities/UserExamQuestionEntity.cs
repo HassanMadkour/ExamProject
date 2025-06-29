@@ -16,7 +16,7 @@ namespace ExamProject.Domain.Entities {
         [Range(0, 20)]
         public short AnswerScore { get; set; }
 
-        public string SelectedAnswer { get; set; }
+        public int SelectedAnswer { get; set; }
 
         [ForeignKey("Id")]
         public virtual ApplicationUser User { get; set; }
