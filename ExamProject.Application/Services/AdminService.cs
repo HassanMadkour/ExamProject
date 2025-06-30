@@ -24,7 +24,7 @@ namespace ExamProject.Application.Services {
                 ExamEntity? exam = await _unitOfWork.ExamRepo.GetByIdAsync(id);
                 if (exam == null) return Either<Failure, ExamStudentsDTO>.Failure(new NotFoundFailure("Exam not found"));
                 ExamStudentsDTO examStudentsDTO = _mapper.Map<ExamStudentsDTO>(exam);
-                examStudentsDTO.Students = _mapper.Map<List<DisplayStudentDTO>>(_unitOfWork.UserExamRepo.GetUserExamsForUser(id));
+                examStudentsDTO.Students = _mapper.Map<List<DisplayStudentDTO>>(_unitOfWork.UserExamRepo.GetUserExamsForExam(id));
 
                 return Either<Failure, ExamStudentsDTO>.Success(examStudentsDTO);
             } catch (Exception ex) {

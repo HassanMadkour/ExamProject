@@ -94,7 +94,7 @@ namespace ExamProject.Application.Services {
 
         public async Task<List<StudentQuestionDTO>> GetExamQuestionsAsync(int examId) {
             var questions = unitOfWork.QuestionRepo.GetAllAsync().Where(q => q.ExamId == examId);
-            return mapper.Map<List<StudentQuestionDTO>>(questions);
+            return mapper.Map<List<StudentQuestionDTO>>(questions.ToList());
         }
 
         public async Task<SubmitExamResultDTO> SubmitExamAsync(SubmitAnswerDTO model) {
@@ -133,17 +133,21 @@ namespace ExamProject.Application.Services {
             }
 
             var userExam = unitOfWork.UserExamRepo.GetUserExam(model.UserId, model.ExamId);
-            if (userExam != null) {
+            if (userExam != null)
+            {
                 userExam.TotalScore = (short)totalScore;
                 userExam.IsCompleted = true;
-            } else {
-                await unitOfWork.UserExamRepo.AddAsync(new UserExamEntity {
-                    Id = model.UserId,
-                    ExamId = model.ExamId,
-                    IsCompleted = true,
-                    TotalScore = (short)totalScore
-                });
+                userExam.IsPassed = userExam.TotalScore >= userExam.Exam.MinDegree;
             }
+            //} else {
+            //    await unitOfWork.UserExamRepo.AddAsync(new UserExamEntity {
+            //        Id = model.UserId,
+            //        ExamId = model.ExamId,
+            //        IsCompleted = true,
+            //        TotalScore = (short)totalScore
+                    
+            //    });
+            //}
 
             await unitOfWork.SaveChangesAsync();
 
