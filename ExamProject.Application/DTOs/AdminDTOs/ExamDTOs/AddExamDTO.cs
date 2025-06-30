@@ -19,6 +19,6 @@ namespace ExamProject.Application.DTOs.AdminDTOs.ExamDTOs {
 
         public DateTime EndTime { get; set; }
 
-        public virtual ICollection<QuestionDTO> Questions { get; set; }
+        public virtual ICollection<QuestionDTO>? Questions { get; set; }
     }
 }

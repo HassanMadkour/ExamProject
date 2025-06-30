@@ -32,24 +32,27 @@ namespace ExamProject.Application.Services
             var exam = mapper.Map<ExamEntity>(examDTO);
             await unitOfWork.ExamRepo.AddAsync(exam);
             await unitOfWork.SaveChangesAsync();
-            foreach (var question in examDTO.Questions)
+            if (examDTO.Questions != null)
             {
-
-                QuestionEntity q = new QuestionEntity
+                foreach (var question in examDTO.Questions)
                 {
-                    Text = question.Text,
-                    Choice1 = question.Choice1,
-                    Choice2 = question.Choice2,
-                    Choice3 = question.Choice3,
-                    Choice4 = question.Choice4,
-                    CorrectAnswer = question.CorrectAnswer,
-                    Score = (short)question.Score,
-                    ExamId=exam.Id,
-                };
-                await unitOfWork.QuestionRepo.AddAsync(q);
+
+                    QuestionEntity q = new QuestionEntity
+                    {
+                        Text = question.Text,
+                        Choice1 = question.Choice1,
+                        Choice2 = question.Choice2,
+                        Choice3 = question.Choice3,
+                        Choice4 = question.Choice4,
+                        CorrectAnswer = question.CorrectAnswer,
+                        Score = (short)question.Score,
+                        ExamId = exam.Id,
+                    };
+                    await unitOfWork.QuestionRepo.AddAsync(q);
+                }
+                await unitOfWork.SaveChangesAsync();
+
             }
-            await unitOfWork.SaveChangesAsync();
-             
         }
 
         public async Task<ExamDTO?> Delete(int id)

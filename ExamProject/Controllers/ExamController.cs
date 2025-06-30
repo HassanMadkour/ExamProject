@@ -70,7 +70,7 @@ namespace ExamProject.API.Controllers
             try
             {
                 var result = await service.SearchAsync(examName);
-                if (result == null ||result.Count==0) return NotFound("No exams found matching the search .");
+                //if (result == null ||result.Count==0) return NotFound("No exams found matching the search .");
                 return Ok(result);
 
             }
