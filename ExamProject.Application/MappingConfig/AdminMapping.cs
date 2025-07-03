@@ -22,7 +22,7 @@ namespace ExamProject.Application.MappingConfig {
             CreateMap<UserExamEntity, DisplayStudentDTO>().AfterMap((src, dest) => {
                 dest.Marks = src.TotalScore;
                 dest.isPassed = src.IsPassed;
-                dest.FullName = src.User.Name;
+                dest.FullName = src.User.UserName;
             });
 
             CreateMap<BaseQuestionDTO, QuestionEntity>().AfterMap((src, dest) => {

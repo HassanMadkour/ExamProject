@@ -10,7 +10,11 @@ namespace ExamProject.Application.MappingConfig {
 
         public StudentMapping() {
             CreateMap<QuestionEntity, StudentQuestionDTO>()
-      .ForMember(dest => dest.QuestionText, opt => opt.MapFrom(src => src.Text));
+             .AfterMap((src , dist ) =>
+             {
+                 dist.QuestionText = src.Text;
+                 dist.QuestionId = src.Id;
+             }).ReverseMap();
 
             CreateMap<UserExamEntity, CompletedUserExamsDTO>().AfterMap((src, dest) => {
                 dest.ExamName = src.Exam.Name;
@@ -27,6 +31,11 @@ namespace ExamProject.Application.MappingConfig {
                 dest.CorrectAnswer = src.Question.CorrectAnswer;
                 dest.Score = src.Question.Score;
                 dest.AnswerScore = src.AnswerScore;
+                dest.Id = src.QuestionId;
+                dest.Choice1 = src.Question.Choice1;
+                dest.Choice2 = src.Question.Choice2;
+                dest.Choice3 = src.Question.Choice3;
+                dest.Choice4 = src.Question.Choice4;
             });
         }
     }
