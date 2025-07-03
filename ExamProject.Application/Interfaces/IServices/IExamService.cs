@@ -16,8 +16,6 @@ namespace ExamProject.Application.Interfaces.IServices {
 
         Task Update(int examId, ExamUpdateDTO examUpdateDTO);
 
-        Task Delete(int id);
-
         Task<GetExamDTO> GetExamWithQuestionsAsync(int id);
 
         Task<List<ExamListDTO>> GetAllUncompletedExamsAsync(int userId);
