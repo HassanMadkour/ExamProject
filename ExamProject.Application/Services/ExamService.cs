@@ -4,6 +4,7 @@ using ExamProject.Application.DTOs.StudentDTOs.ExamDTOs;
 using ExamProject.Application.DTOs.StudentDTOs.QuestionDTOs;
 using ExamProject.Application.Interfaces.IServices;
 using ExamProject.Application.Interfaces.IUnitOfWorks;
+using ExamProject.Application.Utils;
 using ExamProject.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,25 +23,40 @@ namespace ExamProject.Application.Services {
             var exam = mapper.Map<ExamEntity>(examDTO);
             await unitOfWork.ExamRepo.AddAsync(exam);
             await unitOfWork.SaveChangesAsync();
-            foreach (var question in examDTO.Questions) {
-                QuestionEntity q = new QuestionEntity {
-                    Text = question.QuestionText,
-                    Choice1 = question.Choice1,
-                    Choice2 = question.Choice2,
-                    Choice3 = question.Choice3,
-                    Choice4 = question.Choice4,
-                    CorrectAnswer = question.CorrectAnswer,
-                    Score = (short)question.Score,
-                    ExamId = exam.Id,
-                };
-                await unitOfWork.QuestionRepo.AddAsync(q);
+            if (examDTO.Questions != null)
+            {
+                foreach (var question in examDTO.Questions)
+                {
+
+                    QuestionEntity q = new QuestionEntity
+                    {
+                        Text = question.Text,
+                        Choice1 = question.Choice1,
+                        Choice2 = question.Choice2,
+                        Choice3 = question.Choice3,
+                        Choice4 = question.Choice4,
+                        CorrectAnswer = question.CorrectAnswer,
+                        Score = (short)question.Score,
+                        ExamId = exam.Id,
+                    };
+                    await unitOfWork.QuestionRepo.AddAsync(q);
+                }
+                await unitOfWork.SaveChangesAsync();
+
             }
-            await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task Delete(int id) {
-            await unitOfWork.ExamRepo.Delete(id);
+        public async Task<ExamDTO?> Delete(int id)
+        {
+            var exam =await unitOfWork.ExamRepo.Delete(id);
+
+            if (exam == null) {
+                return null;
+            }
             await unitOfWork.SaveChangesAsync();
+            return mapper.Map<ExamDTO>(exam);
+           
+
         }
 
         public async Task<List<ExamDTO>> GetAllExamAsync() {
@@ -63,8 +79,14 @@ namespace ExamProject.Application.Services {
             await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<GetExamDTO> GetExamWithQuestionsAsync(int id) {
-            var exam = await unitOfWork.ExamRepo.GetByIdAsync(id);
+        public async Task<GetExamDTO?> GetExamWithQuestionsAsync(int id)
+        {
+            var exam =await unitOfWork.ExamRepo.GetByIdAsync(id);
+            if(exam  == null)
+            {
+                return null;
+            }
+            exam.Questions =  exam.Questions.Where(q=>!q.IsDeleted).ToList();
             return mapper.Map<GetExamDTO>(exam);
         }
 

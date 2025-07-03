@@ -1,6 +1,7 @@
 ﻿namespace ExamProject.Application.DTOs.AdminDTOs.ExamDTOs {
 
     public class ExamDTO {
+        public int Id { get; set; }
         public string Name { get; set; }
 
         public short MinDegree { get; set; }

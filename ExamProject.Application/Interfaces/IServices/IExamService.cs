@@ -12,9 +12,11 @@ namespace ExamProject.Application.Interfaces.IServices {
 
         Task AddAsync(AddExamDTO examDTO);
 
-        Task Delete(int id);
+        Task<ExamDTO> Delete(int id);
 
         Task Update(int examId, ExamUpdateDTO examUpdateDTO);
+
+        Task Delete(int id);
 
         Task<GetExamDTO> GetExamWithQuestionsAsync(int id);
 
