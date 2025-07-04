@@ -9,8 +9,8 @@ namespace ExamProject.Infrastructure.Repositories {
         public QuestionRepo(ExamDbContext examDb) : base(examDb) {
         }
 
-        public List<QuestionEntity> GetQuestionsByExamId(int id) {
-            return examDb.Questions.Where(x => x.ExamId == id && !x.IsDeleted).ToList();
+        public List<QuestionEntity> GetQuestionsByExamId(int id, int page, int pageSize) {
+            return examDb.Questions.Where(x => x.ExamId == id && !x.IsDeleted).Skip((page - 1) * pageSize).Take(pageSize).ToList();
         }
     }
 }

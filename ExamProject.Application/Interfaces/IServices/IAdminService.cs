@@ -12,7 +12,7 @@ namespace ExamProject.Application.Interfaces.IServices {
 
         public Task<Either<Failure, DisplayQuestionDTO>> GetQuestionById(int id);
 
-        public Task<Either<Failure, List<DisplayQuestionDTO>>> GetAllQuestionsForExam(int examId);
+        public Task<Either<Failure, List<DisplayQuestionDTO>>> GetAllQuestionsForExam(int examId, int page, int pageSize);
 
         public Task<Either<Failure, BaseQuestionDTO>> DeleteQuestion(int id);
 

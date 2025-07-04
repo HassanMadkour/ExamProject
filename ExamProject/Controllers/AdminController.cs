@@ -35,8 +35,8 @@ namespace ExamProject.API.Controllers {
         }
 
         [HttpGet("Exam/{id}/Questions")]
-        public async Task<IActionResult> GetAllQuestions(int id) {
-            Either<Failure, List<DisplayQuestionDTO>> result = await adminService.GetAllQuestionsForExam(id);
+        public async Task<IActionResult> GetAllQuestions(int id, int page = 1, int pageSize = 10) {
+            Either<Failure, List<DisplayQuestionDTO>> result = await adminService.GetAllQuestionsForExam(id, page, pageSize);
             if (result.IsSuccess)
                 return Ok(result.Right);
             else
