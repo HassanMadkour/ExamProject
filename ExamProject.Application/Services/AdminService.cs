@@ -92,5 +92,14 @@ namespace ExamProject.Application.Services {
                 return Either<Failure, UpdateQuestionDTO>.Failure(new Failure(ex.Message));
             }
         }
+
+        public Either<Failure, List<DisplayQuestionDTO>> SearchQuestion(int id, string search, int page, int pageSize) {
+            try {
+                List<QuestionEntity> questions = _unitOfWork.QuestionRepo.SearchAboutQuestions(id, search, page, pageSize);
+                return Either<Failure, List<DisplayQuestionDTO>>.Success(_mapper.Map<List<DisplayQuestionDTO>>(questions));
+            } catch (Exception ex) {
+                return Either<Failure, List<DisplayQuestionDTO>>.Failure(new Failure(ex.Message));
+            }
+        }
     }
 }

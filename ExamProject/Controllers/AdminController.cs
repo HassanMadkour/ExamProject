@@ -70,5 +70,14 @@ namespace ExamProject.API.Controllers {
             else
                 return FailureIActionResult.FailureHandler(result.Left);
         }
+
+        [HttpGet("Exam/{id}/Questions/{search}")]
+        public IActionResult SearchAboutQuestion(int id, string search, int page = 1, int pageSize = 10) {
+            Either<Failure, List<DisplayQuestionDTO>> result = adminService.SearchQuestion(id, search, page, pageSize);
+            if (result.IsSuccess)
+                return Ok(result.Right);
+            else
+                return FailureIActionResult.FailureHandler(result.Left);
+        }
     }
 }

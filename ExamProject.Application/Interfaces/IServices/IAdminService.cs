@@ -17,5 +17,7 @@ namespace ExamProject.Application.Interfaces.IServices {
         public Task<Either<Failure, BaseQuestionDTO>> DeleteQuestion(int id);
 
         public Task<Either<Failure, UpdateQuestionDTO>> UpdateQuestion(int id, UpdateQuestionDTO updateQuestionDTO);
+
+        public Either<Failure, List<DisplayQuestionDTO>> SearchQuestion(int id, string search, int page, int pageSize);
     }
 }
