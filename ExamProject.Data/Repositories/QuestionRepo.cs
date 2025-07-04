@@ -10,7 +10,7 @@ namespace ExamProject.Infrastructure.Repositories {
         }
 
         public List<QuestionEntity> GetQuestionsByExamId(int id) {
-            return examDb.Questions.Where(x => x.ExamId == id).ToList();
+            return examDb.Questions.Where(x => x.ExamId == id && !x.IsDeleted).ToList();
         }
     }
 }
