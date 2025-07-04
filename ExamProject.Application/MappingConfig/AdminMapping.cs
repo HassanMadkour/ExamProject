@@ -50,11 +50,12 @@ namespace ExamProject.Application.MappingConfig {
             CreateMap<AddExamDTO, ExamEntity>()
             .ForMember(dest => dest.Questions, opt => opt.Ignore());
             CreateMap<ExamEntity, GetExamDTO>().AfterMap((s, d) => {
-                d.QuestionOfNumber = s.Questions?.Count() ?? 0;
+                d.NumberOfQuestions = s.Questions?.Count() ?? 0;
             });
 
             CreateMap<ExamEntity, ExamDTO>().AfterMap((s, d) => {
-                d.QuestionOfNumber = s.Questions?.Count() ?? 0;
+                d.NumberOfQuestions = s.Questions?.Count() ?? 0;
+                d.TotalScore = s.Questions?.Sum(q => q.Score) ?? 0;
             });
 
             CreateMap<ExamUpdateDTO, ExamEntity>().ReverseMap();

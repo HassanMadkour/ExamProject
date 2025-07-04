@@ -12,6 +12,8 @@
         public DateTime StartTime { get; set; }
 
         public DateTime EndTime { get; set; }
-        public int QuestionOfNumber { get; set; }
+        public int NumberOfQuestions { get; set; }
+
+        public int TotalScore { get; set; }
     }
 }
