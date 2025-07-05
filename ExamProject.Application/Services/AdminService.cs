@@ -25,7 +25,6 @@ namespace ExamProject.Application.Services {
                 if (exam == null) return Either<Failure, ExamStudentsDTO>.Failure(new NotFoundFailure("Exam not found"));
                 ExamStudentsDTO examStudentsDTO = _mapper.Map<ExamStudentsDTO>(exam);
                 examStudentsDTO.Students = _mapper.Map<List<DisplayStudentDTO>>(_unitOfWork.UserExamRepo.GetUserExamsForExam(id));
-
                 return Either<Failure, ExamStudentsDTO>.Success(examStudentsDTO);
             } catch (Exception ex) {
                 return Either<Failure, ExamStudentsDTO>.Failure(new Failure(ex.Message));
@@ -55,11 +54,11 @@ namespace ExamProject.Application.Services {
             }
         }
 
-        public async Task<Either<Failure, List<DisplayQuestionDTO>>> GetAllQuestionsForExam(int examId) {
+        public async Task<Either<Failure, List<DisplayQuestionDTO>>> GetAllQuestionsForExam(int examId, int page, int pageSize) {
             try {
                 ExamEntity? exam = await _unitOfWork.ExamRepo.GetByIdAsync(examId);
                 if (exam == null) return Either<Failure, List<DisplayQuestionDTO>>.Failure(new NotFoundFailure("Exam not found"));
-                List<QuestionEntity> questions = _unitOfWork.QuestionRepo.GetQuestionsByExamId(examId);
+                List<QuestionEntity> questions = _unitOfWork.QuestionRepo.GetQuestionsByExamId(examId, page, pageSize);
                 return Either<Failure, List<DisplayQuestionDTO>>.Success(_mapper.Map<List<DisplayQuestionDTO>>(questions));
             } catch (Exception ex) {
                 return Either<Failure, List<DisplayQuestionDTO>>.Failure(new Failure(ex.Message));
@@ -91,6 +90,15 @@ namespace ExamProject.Application.Services {
                 return Either<Failure, UpdateQuestionDTO>.Failure(new NotFoundFailure(ex.Message));
             } catch (Exception ex) {
                 return Either<Failure, UpdateQuestionDTO>.Failure(new Failure(ex.Message));
+            }
+        }
+
+        public Either<Failure, List<DisplayQuestionDTO>> SearchQuestion(int id, string search, int page, int pageSize) {
+            try {
+                List<QuestionEntity> questions = _unitOfWork.QuestionRepo.SearchAboutQuestions(id, search, page, pageSize);
+                return Either<Failure, List<DisplayQuestionDTO>>.Success(_mapper.Map<List<DisplayQuestionDTO>>(questions));
+            } catch (Exception ex) {
+                return Either<Failure, List<DisplayQuestionDTO>>.Failure(new Failure(ex.Message));
             }
         }
     }

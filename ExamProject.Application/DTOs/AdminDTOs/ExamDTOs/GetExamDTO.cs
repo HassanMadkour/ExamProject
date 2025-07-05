@@ -13,7 +13,7 @@ namespace ExamProject.Application.DTOs.AdminDTOs.ExamDTOs {
         public DateTime StartTime { get; set; }
 
         public DateTime EndTime { get; set; }
-        public int QuestionOfNumber { get; set; }
+        public int NumberOfQuestions { get; set; }
         public virtual ICollection<DisplayQuestionDTO> Questions { get; set; }
     }
 }

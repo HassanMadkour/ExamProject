@@ -1,6 +1,13 @@
-﻿namespace ExamProject.Application.DTOs.AdminDTOs.ExamDTOs {
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-    public class ExamDTO {
+namespace ExamProject.Application.DTOs.AdminDTOs.ExamDTOs
+{
+    public class SearchDTO
+    {
         public int Id { get; set; }
         public string Name { get; set; }
 
@@ -13,7 +20,5 @@
 
         public DateTime EndTime { get; set; }
         public int NumberOfQuestions { get; set; }
-
-        public int TotalScore { get; set; }
     }
 }

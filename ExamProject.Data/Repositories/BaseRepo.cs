@@ -17,8 +17,11 @@ namespace ExamProject.Infrastructure.Repositories {
             return entity;
         }
 
-        public async Task<T> Delete(int id) {
+        public async Task<T?> Delete(int id) {
             var entity = await GetByIdAsync(id);
+            if (entity == null) {
+                return null;
+            }
             entity!.IsDeleted = true;
             await Update(entity);
             return entity;

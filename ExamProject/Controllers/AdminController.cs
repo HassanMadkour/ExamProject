@@ -35,8 +35,8 @@ namespace ExamProject.API.Controllers {
         }
 
         [HttpGet("Exam/{id}/Questions")]
-        public async Task<IActionResult> GetAllQuestions(int id) {
-            Either<Failure, List<DisplayQuestionDTO>> result = await adminService.GetAllQuestionsForExam(id);
+        public async Task<IActionResult> GetAllQuestions(int id, int page = 1, int pageSize = 10) {
+            Either<Failure, List<DisplayQuestionDTO>> result = await adminService.GetAllQuestionsForExam(id, page, pageSize);
             if (result.IsSuccess)
                 return Ok(result.Right);
             else
@@ -65,6 +65,15 @@ namespace ExamProject.API.Controllers {
         [HttpDelete("Question/{id}")]
         public async Task<IActionResult> DeleteQuestion(int id) {
             Either<Failure, BaseQuestionDTO> result = await adminService.DeleteQuestion(id);
+            if (result.IsSuccess)
+                return Ok(result.Right);
+            else
+                return FailureIActionResult.FailureHandler(result.Left);
+        }
+
+        [HttpGet("Exam/{id}/Questions/{search}")]
+        public IActionResult SearchAboutQuestion(int id, string search, int page = 1, int pageSize = 10) {
+            Either<Failure, List<DisplayQuestionDTO>> result = adminService.SearchQuestion(id, search, page, pageSize);
             if (result.IsSuccess)
                 return Ok(result.Right);
             else

@@ -24,14 +24,12 @@ namespace ExamProject.API.Controllers {
             if (examId <= 0) return BadRequest();
             try {
                 var exam = await service.GetExamByIdAsync(examId);
-                if (exam == null) return BadRequest();
+                if (exam == null) return NotFound("Not Found Exam");
                 return Ok(exam);
             } catch (Exception ex) {
                 return BadRequest();
             }
-
         }
-
 
         //get Exam with Questions
         [HttpGet("ExamWithQuestions")]
@@ -39,23 +37,21 @@ namespace ExamProject.API.Controllers {
             if (id <= 0) return BadRequest();
             try {
                 var examWithQuest = await service.GetExamWithQuestionsAsync(id);
+                if (examWithQuest == null) return NotFound("Exam not found.");
                 return Ok(examWithQuest);
             } catch (Exception ex) {
                 return BadRequest();
             }
-
         }
 
         [HttpGet("Search/ExamName")]
         public async Task<IActionResult> Search(string examName) {
-
             try {
                 if (examName == null) return BadRequest();
                 var result = await service.SearchAsync(examName);
                 return Ok(result);
-
             } catch (Exception ex) {
-                return BadRequest();
+                return NoContent();
             }
         }
 
@@ -67,7 +63,6 @@ namespace ExamProject.API.Controllers {
 
             await service.AddAsync(examDTO);
             return Created();
-
         }
         [HttpPut("id")]
         public async Task<IActionResult> Update(int examid, ExamUpdateDTO examDto) {
@@ -78,7 +73,6 @@ namespace ExamProject.API.Controllers {
             } catch (Exception ex) {
                 return BadRequest();
             }
-
         }
 
         [HttpDelete]
@@ -90,14 +84,6 @@ namespace ExamProject.API.Controllers {
             } catch (Exception ex) {
                 return BadRequest();
             }
-
         }
-
-
-
-
-
-
-
     }
 }

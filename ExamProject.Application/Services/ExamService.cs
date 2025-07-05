@@ -22,25 +22,32 @@ namespace ExamProject.Application.Services {
             var exam = mapper.Map<ExamEntity>(examDTO);
             await unitOfWork.ExamRepo.AddAsync(exam);
             await unitOfWork.SaveChangesAsync();
-            foreach (var question in examDTO.Questions) {
-                QuestionEntity q = new QuestionEntity {
-                    Text = question.QuestionText,
-                    Choice1 = question.Choice1,
-                    Choice2 = question.Choice2,
-                    Choice3 = question.Choice3,
-                    Choice4 = question.Choice4,
-                    CorrectAnswer = question.CorrectAnswer,
-                    Score = (short)question.Score,
-                    ExamId = exam.Id,
-                };
-                await unitOfWork.QuestionRepo.AddAsync(q);
+            if (examDTO.Questions != null) {
+                foreach (var question in examDTO.Questions) {
+                    QuestionEntity q = new QuestionEntity {
+                        Text = question.QuestionText,
+                        Choice1 = question.Choice1,
+                        Choice2 = question.Choice2,
+                        Choice3 = question.Choice3,
+                        Choice4 = question.Choice4,
+                        CorrectAnswer = question.CorrectAnswer,
+                        Score = (short)question.Score,
+                        ExamId = exam.Id,
+                    };
+                    await unitOfWork.QuestionRepo.AddAsync(q);
+                }
+                await unitOfWork.SaveChangesAsync();
             }
-            await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task Delete(int id) {
-            await unitOfWork.ExamRepo.Delete(id);
+        public async Task<ExamDTO?> Delete(int id) {
+            var exam = await unitOfWork.ExamRepo.Delete(id);
+
+            if (exam == null) {
+                return null;
+            }
             await unitOfWork.SaveChangesAsync();
+            return mapper.Map<ExamDTO>(exam);
         }
 
         public async Task<List<ExamDTO>> GetAllExamAsync() {
@@ -63,15 +70,19 @@ namespace ExamProject.Application.Services {
             await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<GetExamDTO> GetExamWithQuestionsAsync(int id) {
+        public async Task<GetExamDTO?> GetExamWithQuestionsAsync(int id) {
             var exam = await unitOfWork.ExamRepo.GetByIdAsync(id);
+            if (exam == null) {
+                return null;
+            }
+            exam.Questions = exam.Questions.Where(q => !q.IsDeleted).ToList();
             return mapper.Map<GetExamDTO>(exam);
         }
 
-        public async Task<List<ExamDTO>> SearchAsync(string name) {
-            var exams = unitOfWork.ExamRepo.GetAllAsync();
+        public async Task<List<SearchDTO>> SearchAsync(string name) {
+            var exams =  unitOfWork.ExamRepo.GetAllAsync();
             var searchedResult = await exams.Where(e => e.Name.Contains(name)).ToListAsync();
-            return mapper.Map<List<ExamDTO>>(searchedResult);
+            return mapper.Map<List<SearchDTO>>(searchedResult);
         }
 
         public async Task<List<ExamListDTO>> GetAllUncompletedExamsAsync(int userId) {
@@ -159,9 +170,7 @@ namespace ExamProject.Application.Services {
             };
         }
 
-        Task<List<GetExamDTO>> IExamService.SearchAsync(string name) {
-            throw new NotImplementedException();
-        }
+     
 
         public ExamDetailsDTO GetExamDetails(int userId, int examId) {
             List<UserExamQuestionEntity> quesions = unitOfWork.UserQuestionRepo.GetQuestionByUserExam(userId, examId);
