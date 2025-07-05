@@ -49,10 +49,9 @@ namespace ExamProject.API.Controllers {
             try {
                 if (examName == null) return BadRequest();
                 var result = await service.SearchAsync(examName);
-                //if (result == null ||result.Count==0) return NotFound("No exams found matching the search .");
                 return Ok(result);
             } catch (Exception ex) {
-                return BadRequest();
+                return NoContent();
             }
         }
 

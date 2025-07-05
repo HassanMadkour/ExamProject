@@ -79,10 +79,10 @@ namespace ExamProject.Application.Services {
             return mapper.Map<GetExamDTO>(exam);
         }
 
-        public async Task<List<ExamDTO>> SearchAsync(string name) {
-            var exams = unitOfWork.ExamRepo.GetAllAsync();
+        public async Task<List<SearchDTO>> SearchAsync(string name) {
+            var exams =  unitOfWork.ExamRepo.GetAllAsync();
             var searchedResult = await exams.Where(e => e.Name.Contains(name)).ToListAsync();
-            return mapper.Map<List<ExamDTO>>(searchedResult);
+            return mapper.Map<List<SearchDTO>>(searchedResult);
         }
 
         public async Task<List<ExamListDTO>> GetAllUncompletedExamsAsync(int userId) {
@@ -170,9 +170,7 @@ namespace ExamProject.Application.Services {
             };
         }
 
-        Task<List<GetExamDTO>> IExamService.SearchAsync(string name) {
-            throw new NotImplementedException();
-        }
+     
 
         public ExamDetailsDTO GetExamDetails(int userId, int examId) {
             List<UserExamQuestionEntity> quesions = unitOfWork.UserQuestionRepo.GetQuestionByUserExam(userId, examId);

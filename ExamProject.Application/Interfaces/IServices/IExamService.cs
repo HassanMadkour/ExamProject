@@ -24,7 +24,7 @@ namespace ExamProject.Application.Interfaces.IServices {
 
         Task<SubmitExamResultDTO> SubmitExamAsync(SubmitAnswerDTO model);
 
-        Task<List<GetExamDTO>> SearchAsync(string name);
+        Task<List<SearchDTO>> SearchAsync(string name);
 
         ExamDetailsDTO GetExamDetails(int userId, int examId);
     }
