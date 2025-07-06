@@ -37,6 +37,7 @@ namespace ExamProject.Application.MappingConfig {
                 dest.Choice3 = src.Question.Choice3;
                 dest.Choice4 = src.Question.Choice4;
             });
+            CreateMap<ExamListDTO, ExamEntity>().ReverseMap();
         }
     }
 }
