@@ -19,5 +19,10 @@ namespace ExamProject.Application.Services {
             List<UserExamEntity> userExams = unitOfWork.UserExamRepo.GetCompletedUserExamsForUser(userId);
             return mapper.Map<List<CompletedUserExamsDTO>>(userExams);
         }
+
+        public List<UnCompletedUserExamsDTO> GetUnpassedUserExamsForUser(int userId) {
+            List<UserExamEntity> userExams = unitOfWork.UserExamRepo.GetUnpassedUserExamsForUser(userId);
+            return mapper.Map<List<UnCompletedUserExamsDTO>>(userExams);
+        }
     }
 }

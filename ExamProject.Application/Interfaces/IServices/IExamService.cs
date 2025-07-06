@@ -18,7 +18,7 @@ namespace ExamProject.Application.Interfaces.IServices {
 
         Task<GetExamDTO> GetExamWithQuestionsAsync(int id);
 
-        Task<List<ExamListDTO>> GetAllUncompletedExamsAsync(int userId);
+        //Task<List<ExamListDTO>> GetAllUncompletedExamsAsync(int userId);
 
         Task<List<StudentQuestionDTO>> GetExamQuestionsAsync(int examId);
 

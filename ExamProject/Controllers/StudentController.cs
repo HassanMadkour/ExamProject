@@ -16,9 +16,13 @@ namespace ExamProject.API.Controllers {
         }
 
         [HttpGet("exams/{userId}")]
-        public async Task<IActionResult> GetExams(int userId) {
-            var exams = await _examService.GetAllUncompletedExamsAsync(userId);
-            return Ok(exams);
+        public IActionResult GetExams(int userId) {
+            try {
+                var exams = _userExamService.GetUnpassedUserExamsForUser(userId);
+                return Ok(exams);
+            } catch (Exception ex) {
+                return BadRequest();
+            }
         }
 
         [HttpGet("examQuestions/{examId}")]

@@ -80,28 +80,27 @@ namespace ExamProject.Application.Services {
         }
 
         public async Task<List<SearchDTO>> SearchAsync(string name) {
-            var exams =  unitOfWork.ExamRepo.GetAllAsync();
+            var exams = unitOfWork.ExamRepo.GetAllAsync();
             var searchedResult = await exams.Where(e => e.Name.Contains(name)).ToListAsync();
             return mapper.Map<List<SearchDTO>>(searchedResult);
         }
 
-        public async Task<List<ExamListDTO>> GetAllUncompletedExamsAsync(int userId) {
-            var allExams = unitOfWork.ExamRepo.GetAllAsync();
-            var userExams = unitOfWork.UserExamRepo.GetUserExamsForUser(userId);
-            var result = new List<ExamListDTO>();
+        //public async Task<List<ExamListDTO>> GetAllUncompletedExamsAsync(int userId) {
+        //    var allExams = unitOfWork.ExamRepo.GetAllAsync();
+        //    var userExams = unitOfWork.UserExamRepo.GetUserExamsForUser(userId);
+        //    var result = new List<ExamListDTO>();
 
-            foreach (var exam in allExams) {
-                var userExam = userExams.FirstOrDefault(userEx => userEx.ExamId == exam.Id);
-                bool isPassed = (userExam?.TotalScore ?? 0) >= exam.MinDegree;
+        // foreach (var exam in allExams) { var userExam = userExams.FirstOrDefault(userEx =>
+        // userEx.ExamId == exam.Id); bool isPassed = (userExam?.TotalScore ?? 0) >= exam.MinDegree;
 
-                if (!isPassed) {
-                    var dto = mapper.Map<ExamListDTO>(exam);
-                    dto.IsPassed = isPassed;
-                    result.Add(dto);
-                }
-            }
-            return result;
-        }
+        //        if (!isPassed) {
+        //            var dto = mapper.Map<ExamListDTO>(exam);
+        //            dto.IsPassed = isPassed;
+        //            result.Add(dto);
+        //        }
+        //    }
+        //    return result;
+        //}
 
         public async Task<List<StudentQuestionDTO>> GetExamQuestionsAsync(int examId) {
             var questions = unitOfWork.QuestionRepo.GetAllAsync().Where(q => q.ExamId == examId);
@@ -144,8 +143,7 @@ namespace ExamProject.Application.Services {
             }
 
             var userExam = unitOfWork.UserExamRepo.GetUserExam(model.UserId, model.ExamId);
-            if (userExam != null)
-            {
+            if (userExam != null) {
                 userExam.TotalScore = (short)totalScore;
                 userExam.IsCompleted = true;
                 userExam.IsPassed = userExam.TotalScore >= userExam.Exam.MinDegree;
@@ -156,7 +154,7 @@ namespace ExamProject.Application.Services {
             //        ExamId = model.ExamId,
             //        IsCompleted = true,
             //        TotalScore = (short)totalScore
-                    
+
             //    });
             //}
 
@@ -169,8 +167,6 @@ namespace ExamProject.Application.Services {
                 Details = result
             };
         }
-
-     
 
         public ExamDetailsDTO GetExamDetails(int userId, int examId) {
             List<UserExamQuestionEntity> quesions = unitOfWork.UserQuestionRepo.GetQuestionByUserExam(userId, examId);
