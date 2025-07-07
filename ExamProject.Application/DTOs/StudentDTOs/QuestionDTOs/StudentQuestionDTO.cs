@@ -11,6 +11,8 @@ namespace ExamProject.Application.DTOs.StudentDTOs.QuestionDTOs {
         public string Choice3 { get; set; }
         public string Choice4 { get; set; }
         public short Score { get; set; }
+     
+
     }
 
 }

@@ -5,5 +5,6 @@
         public int SelectedAnswer { get; set; }
         public bool IsCorrect { get; set; }
         public int Score { get; set; }
+        public string CorrectAnswer { get; set; }
     }
 }

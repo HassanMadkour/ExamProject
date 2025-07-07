@@ -27,7 +27,7 @@ namespace ExamProject.API.Controllers {
             return Ok(questions);
         }
 
-        [HttpPost("submitExam")]
+        [HttpPost("submitExam")]    
         public async Task<IActionResult> SubmitExam([FromBody] SubmitAnswerDTO model) {
             var result = await _examService.SubmitExamAsync(model);
             return Ok(result);
