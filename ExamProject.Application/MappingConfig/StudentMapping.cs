@@ -10,8 +10,7 @@ namespace ExamProject.Application.MappingConfig {
 
         public StudentMapping() {
             CreateMap<QuestionEntity, StudentQuestionDTO>()
-             .AfterMap((src , dist ) =>
-             {
+             .AfterMap((src, dist) => {
                  dist.QuestionText = src.Text;
                  dist.QuestionId = src.Id;
              }).ReverseMap();
@@ -20,6 +19,14 @@ namespace ExamProject.Application.MappingConfig {
                 dest.ExamName = src.Exam.Name;
                 dest.MaxScore = src.Exam.MaxDegree;
             });
+
+            CreateMap<UserExamEntity, UnCompletedUserExamsDTO>().
+                AfterMap((src, dest) => {
+                    dest.ExamName = src.Exam.Name;
+                    dest.MaxScore = src.Exam.MaxDegree;
+                    dest.Exam.NumberOfQuestions = src.Exam.Questions?.Where(q => !q.IsDeleted).Count() ?? 0;
+                    dest.TotalScore = src.Exam.Questions?.Where(q => !q.IsDeleted)?.Sum(q => q.Score) ?? 0;
+                });
 
             CreateMap<UserExamEntity, ExamDetailsDTO>().AfterMap((src, dest) => {
                 dest.ExamName = src.Exam.Name;

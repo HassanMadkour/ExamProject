@@ -22,7 +22,11 @@ namespace ExamProject.Infrastructure.Repositories {
         }
 
         public List<UserExamEntity> GetUserExamsForUser(int userId) {
-            return examDb.UserExams.Where(x => x.Id == userId).ToList();
+            return examDb.UserExams.Where(x => x.Id == userId && !x.IsDeleted).ToList();
+        }
+
+        public List<UserExamEntity> GetUnpassedUserExamsForUser(int userId) {
+            return examDb.UserExams.Where(x => x.Id == userId && x.IsPassed != true && !x.IsDeleted).ToList();
         }
     }
 }
