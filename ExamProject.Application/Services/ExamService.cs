@@ -169,7 +169,7 @@ namespace ExamProject.Application.Services
             if (userExam != null) {
                 userExam.TotalScore = (short)totalScore;
                 userExam.IsCompleted = true;
-                userExam.IsPassed = userExam.TotalScore >= userExam.Exam.;
+                userExam.IsPassed = userExam.TotalScore >= userExam.Exam.MinDegree;
             }
             //} else {
             //    await unitOfWork.UserExamRepo.AddAsync(new UserExamEntity {
