@@ -18,6 +18,7 @@ namespace ExamProject.Application.MappingConfig {
             CreateMap<UserExamEntity, CompletedUserExamsDTO>().AfterMap((src, dest) => {
                 dest.ExamName = src.Exam.Name;
                 dest.MaxScore = src.Exam.MaxDegree;
+                dest.Duration = src.Exam.Duration;
             });
 
             CreateMap<UserExamEntity, UnCompletedUserExamsDTO>().

@@ -6,6 +6,9 @@ namespace ExamProject.Application.Interfaces.IServices {
 
         public List<CompletedUserExamsDTO> GetPassedExamsAsync(int userId);
 
-        public List<UnCompletedUserExamsDTO> GetUnpassedUserExamsForUser(int userId);
+        public List<CompletedUserExamsDTO> GetUnpassedUserExamsForUser(int userId);
+        public List<CompletedUserExamsDTO> GetAllExamsForUser();
+
+
     }
 }

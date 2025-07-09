@@ -62,5 +62,20 @@ namespace ExamProject.API.Controllers {
                 return BadRequest();
             }
         }
+
+        [HttpGet("AllUserExams")]
+        public IActionResult GetAllUserExams()
+        {
+            try
+            {
+                var completedExams = _userExamService.GetAllExamsForUser();
+                return Ok(completedExams);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
     }
 }

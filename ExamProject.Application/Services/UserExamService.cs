@@ -20,9 +20,16 @@ namespace ExamProject.Application.Services {
             return mapper.Map<List<CompletedUserExamsDTO>>(userExams);
         }
 
-        public List<UnCompletedUserExamsDTO> GetUnpassedUserExamsForUser(int userId) {
+        public List<CompletedUserExamsDTO> GetUnpassedUserExamsForUser(int userId) {
             List<UserExamEntity> userExams = unitOfWork.UserExamRepo.GetUnpassedUserExamsForUser(userId);
-            return mapper.Map<List<UnCompletedUserExamsDTO>>(userExams);
+            return mapper.Map<List<CompletedUserExamsDTO>>(userExams);
         }
+
+        public List<CompletedUserExamsDTO> GetAllExamsForUser()
+        {
+            List<UserExamEntity> userExams = unitOfWork.UserExamRepo.GetAllUserExamsForUser();
+            return mapper.Map<List<CompletedUserExamsDTO>>(userExams);
+        }
+
     }
 }

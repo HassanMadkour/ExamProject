@@ -13,5 +13,6 @@ namespace ExamProject.Application.Interfaces.IRepositories {
         public List<UserExamEntity> GetUnpassedUserExamsForUser(int userId);
 
         public List<UserExamEntity> GetCompletedUserExamsForUser(int userId, int page = 1, int pageSize = 10);
+        public List<UserExamEntity> GetAllUserExamsForUser( int page = 1, int pageSize = 10);
     }
 }

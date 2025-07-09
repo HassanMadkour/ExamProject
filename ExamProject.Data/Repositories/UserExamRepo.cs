@@ -10,7 +10,7 @@ namespace ExamProject.Infrastructure.Repositories {
         }
 
         public List<UserExamEntity> GetCompletedUserExamsForUser(int userId, int page = 1, int pageSize = 10) {
-            return examDb.UserExams.Where(x => x.Id == userId && x.IsPassed == true).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            return examDb.UserExams.Where(x => x.Id == userId && x.IsCompleted == true).Skip((page - 1) * pageSize).Take(pageSize).ToList();
         }
 
         public UserExamEntity? GetUserExam(int userId, int examId) {
@@ -26,7 +26,13 @@ namespace ExamProject.Infrastructure.Repositories {
         }
 
         public List<UserExamEntity> GetUnpassedUserExamsForUser(int userId) {
-            return examDb.UserExams.Where(x => x.Id == userId && x.IsPassed != true && !x.IsDeleted).ToList();
+            return examDb.UserExams.Where(x => x.Id == userId && x.IsCompleted != true && !x.IsDeleted).ToList();
+        }
+
+        public List<UserExamEntity> GetAllUserExamsForUser(int page = 1, int pageSize = 10)
+        {
+            return examDb.UserExams.Where(x =>  !x.IsDeleted).AsEnumerable().DistinctBy(x => x.ExamId).ToList();
+
         }
     }
 }

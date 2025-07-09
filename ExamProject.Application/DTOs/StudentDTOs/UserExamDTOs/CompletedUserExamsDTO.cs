@@ -9,5 +9,10 @@
         public bool IsCompleted { get; set; }
 
         public bool? IsPassed { get; set; }
+        public int ExamId { get; set; }
+        public TimeSpan Duration { get; set; }
+
+        
+
     }
 }
